@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Zinken Forge • Pumpkin Square (Trade)</title>
+<meta name="description" content="Мини‑ферма: посадить → полить → вырастить → собрать. Семена, вода, биржа с покупкой/продажей, автосохранение.">
+<style>
+  :root{
+    --bg:#0e0f12; --panel:#15171c; --text:#e9edf5; --muted:#9aa3b2; --line:#232733;
+    --accent:#ff8a1f; --ok:#4be38a; --bad:#ff6b6b; --btn:#1b1f27; --btnh:#232836;
+    --empty:#2a2f3a; --planted:#6b4c2f; --need:#1d3b52; --grow:#245b3a; --ripe:#a35614; --wither:#3a2c2c;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 Inter,system-ui,Segoe UI,Roboto,Arial}
+  header{position:sticky;top:0;z-index:6;background:linear-gradient(180deg,#0b0c10,rgba(11,12,16,.65));border-bottom:1px solid var(--line);backdrop-filter:blur(6px)}
+  .wrap{max-width:1100px;margin:0 auto;padding:14px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .brand{font-weight:800;letter-spacing:.4px}
+  .pill{margin-left:auto;display:flex;gap:12px;align-items:center;background:var(--panel);border:1px solid var(--line);padding:8px 12px;border-radius:10px}
+  .pill b{color:var(--accent)}
+  main{max-width:1100px;margin:18px auto;padding:0 16px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:16px}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .btn{background:var(--btn);border:1px solid var(--line);color:var(--text);padding:9px 12px;border-radius:10px;cursor:pointer;transition:.15s}
+  .btn:hover{background:var(--btnh)}
+  .btn:disabled{opacity:.6;cursor:not-allowed}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .center{display:flex;justify-content:center;align-items:center}
+  .square{width:240px;height:240px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+          border:2px dashed #2f3847;background:var(--empty);box-shadow:inset 0 0 30px rgba(0,0,0,.35)}
+  .state{font-weight:700;letter-spacing:.5px;text-transform:uppercase;text-align:center}
+  .small{font-size:12px;color:var(--muted)}
+  .table{width:100%;border-collapse:collapse}
+  .table th,.table td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left}
+  .table th{color:var(--muted);font-weight:600}
+  .priceUp{color:var(--ok)} .priceDn{color:var(--bad)}
+  footer{max-width:1100px;margin:24px auto 36px;padding:0 16px;color:var(--muted);font-size:12px}
+  .buy{border-color:#335b2f}
+  .sell{border-color:#5b3a2f}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand">🎃 Pumpkin Square</div>
+    <div class="pill">
+      Баланс: <b id="money">$0</b> • 🌱 Семена: <b id="seeds">0</b> • 💧 Вода: <b id="water">0</b> • Обычные: <b id="raw">0</b> • Вырезанные: <b id="carved">0</b>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="card grid2">
+    <div class="center">
+      <div class="square" id="plot"><div class="state" id="stateText">ПУСТО</div></div>
+    </div>
+    <div>
+      <h3 style="margin:0 0 10px">Управление</h3>
+      <div class="row">
+        <button class="btn" id="plantBtn">Посадить</button>
+        <button class="btn" id="waterBtn">Полить</button>
+        <button class="btn" id="harvestBtn">Собрать</button>
+      </div>
+      <div class="small" id="timers" style="margin-top:8px"></div>
+      <div class="row" style="margin-top:12px">
+        <button class="btn" id="buySeed">Купить семена ($20)</button>
+        <button class="btn" id="buyWater">Купить воду ($10)</button>
+      </div>
+      <p class="small">Цикл: посадить → (30с на полив) → полить → (60с рост) → собрать. Если не полить в течение 30с — урожай засохнет.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin:0 0 10px">Резка</h3>
+    <div class="row">
+      <button class="btn" id="carve1">Вырезать 1</button>
+      <button class="btn" id="carveAll">Вырезать всё</button>
+      <span class="small">1 обычная → 1 вырезанная</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin:0 0 10px">Биржа (со спотовой покупкой)</h3>
+    <table class="table">
+      <thead><tr><th>Актив</th><th>Цена</th><th>Доступно</th><th>Действия</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Обычная тыква</td>
+          <td id="pxRaw"></td>
+          <td id="haveRaw"></td>
+          <td>
+            <div class="row">
+              <button class="btn buy" id="buyRaw1">Купить 1</button>
+              <button class="btn buy" id="buyRaw10">Купить 10</button>
+              <button class="btn sell" id="sellRaw10">Продать 10</button>
+              <button class="btn sell" id="sellRawAll">Продать всё</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Вырезанная тыква</td>
+          <td id="pxCarved"></td>
+          <td id="haveCarved"></td>
+          <td>
+            <div class="row">
+              <button class="btn buy" id="buyCarved1">Купить 1</button>
+              <button class="btn buy" id="buyCarved10">Купить 10</button>
+              <button class="btn sell" id="sellCarved10">Продать 10</button>
+              <button class="btn sell" id="sellCarvedAll">Продать всё</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="row" style="margin-top:8px">
+      <button class="btn" id="tickNow">Обновить котировки</button>
+      <span class="small">Котировки обновляются каждые 60с: обычная ~ $20 (±5%), вырезанная ~ $35 (±6%). Покупка списывает баланс по текущей цене.</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin:0 0 10px">Статистика и сохранение</h3>
+    <div class="row">
+      <button class="btn" id="saveBtn">Сохранить</button>
+      <button class="btn" id="resetBtn">Сбросить прогресс</button>
+      <button class="btn" id="exportBtn">Экспорт</button>
+      <button class="btn" id="importBtn">Импорт</button>
+      <span class="small">Автосохранение каждые 15 секунд.</span>
+    </div>
+  </div>
+</main>
+
+
+  <div style="text-align:center;margin-top:20px;">
+    <a href="https://zinkenforge.ru" class="btn" style="text-decoration:none;">⬅️ Вернуться на сайт</a>
+  </div>
+
+<footer>© 2025 Zinken Forge — все права защищены.</footer>
+
+<script>
+"use strict";
+
+// ====== CONFIG ======
+const CFG = {
+  seedPrice: 20,
+  waterPrice: 10,
+  rawBase: 20, carvedBase: 35,
+  rawVol:[-0.05,0.05], carvedVol:[-0.06,0.06],
+  priceTickSec: 60,
+  preWaterSec: 30, // до полива
+  growSec: 60,     // после полива
+  autosaveSec: 15
+};
+
+// ====== STATE ======
+let S = {
+  money: 100,
+  seeds: 3,
+  water: 3,
+  raw: 0,
+  carved: 0,
+  plot: {
+    state: "EMPTY",
+    plantedAt: 0,
+    mustWaterUntil: 0,
+    wateredAt: 0,
+    ripeAt: 0
+  },
+  prices: { raw: 20, carved: 35 },
+  lastDir: { raw: 0, carved: 0 },
+  lastTick: Date.now()
+};
+
+// ====== SAVE ======
+function save(){ localStorage.setItem("zf_pumpkin_square_trade", JSON.stringify(S)); }
+function load(){
+  try{
+    const x = localStorage.getItem("zf_pumpkin_square_trade");
+    if(x){ const d = JSON.parse(x); if(d && typeof d==="object"){ S = {...S, ...d}; } }
+  }catch(e){}
+}
+
+// ====== UI helpers ======
+const $ = s => document.querySelector(s);
+function money(v){ return "$"+Number(v||0).toFixed(0); }
+function setHeader(){
+  $("#money").textContent = money(S.money);
+  $("#seeds").textContent = S.seeds;
+  $("#water").textContent = S.water;
+  $("#raw").textContent = S.raw;
+  $("#carved").textContent = S.carved;
+}
+function setPlotView(){
+  const box = $("#plot");
+  const t = $("#stateText");
+  const timers = $("#timers");
+  let txt="", bg= "var(--empty)";
+  const now = Date.now();
+
+  if(S.plot.state==="EMPTY"){ txt="ПУСТО"; bg="var(--empty)"; timers.textContent=""; }
+  else if(S.plot.state==="PLANTED"){
+    txt="ПОСАЖЕНО";
+    bg="var(--planted)";
+    const left = Math.max(0, Math.ceil((S.plot.mustWaterUntil - now)/1000));
+    timers.textContent = `⏳ До необходимости полива: ${left}с`;
+    if(now >= S.plot.mustWaterUntil){ S.plot.state="WITHERED"; }
+  }
+  else if(S.plot.state==="NEED_WATER"){
+    txt="НУЖНО ПОЛИТЬ";
+    bg="var(--need)";
+    const left = Math.max(0, Math.ceil((S.plot.mustWaterUntil - now)/1000));
+    timers.textContent = `⚠️ Полейте в течение: ${left}с`;
+    if(now >= S.plot.mustWaterUntil){ S.plot.state="WITHERED"; }
+  }
+  else if(S.plot.state==="GROWING"){
+    txt="РАСТЁТ...";
+    bg="var(--grow)";
+    const left = Math.max(0, Math.ceil((S.plot.ripeAt - now)/1000));
+    timers.textContent = `🌱 До созревания: ${left}с`;
+    if(now >= S.plot.ripeAt){ S.plot.state="RIPE"; }
+  }
+  else if(S.plot.state==="RIPE"){
+    txt="ГОТОВО К СБОРУ!";
+    bg="var(--ripe)"; timers.textContent="✅ Можно собирать";
+  }
+  else if(S.plot.state==="WITHERED"){
+    txt="ЗАСОХЛО";
+    bg="var(--wither)"; timers.textContent="💀 Урожай погиб. Соберите, чтобы очистить грядку.";
+  }
+
+  box.style.background = bg;
+  t.textContent = txt;
+}
+function setPrices(){
+  const dirR = S.lastDir.raw, dirC = S.lastDir.carved;
+  const r = $("#pxRaw"), c = $("#pxCarved");
+  if(r) r.innerHTML = `<b class="${dirR>0?'priceUp':(dirR<0?'priceDn':'')}">${money(S.prices.raw)}</b>`;
+  if(c) c.innerHTML = `<b class="${dirC>0?'priceUp':(dirC<0?'priceDn':'')}">${money(S.prices.carved)}</b>`;
+  const hr = $("#haveRaw"), hc = $("#haveCarved");
+  if(hr) hr.textContent = S.raw;
+  if(hc) hc.textContent = S.carved;
+}
+
+// ====== PRICES ======
+function clamp(v,min,max){ return Math.max(min, Math.min(max,v)); }
+function tickPrices(force=false){
+  const now = Date.now();
+  if(!force && now - S.lastTick < CFG.priceTickSec*1000) return;
+  S.lastTick = now;
+
+  const upd = (key, base, vol)=>{
+    const [lo,hi] = vol;
+    const mult = 1 + (Math.random()*(hi-lo)+lo);
+    const cur = S.prices[key]*mult;
+    const next = clamp(cur, base*0.5, base*2.0);
+    S.lastDir[key] = next> S.prices[key] ? 1 : (next< S.prices[key] ? -1 : 0);
+    S.prices[key] = Math.round(next);
+  };
+  upd("raw", CFG.rawBase, CFG.rawVol);
+  upd("carved", CFG.carvedBase, CFG.carvedVol);
+
+  setPrices(); save();
+}
+
+// ====== ACTIONS (field) ======
+function plant(){
+  if(S.plot.state!=="EMPTY"){ alert("Грядка занята"); return; }
+  if(S.seeds<=0){ alert("Нет семян"); return; }
+  S.seeds--;
+  const now = Date.now();
+  S.plot.state="PLANTED";
+  S.plot.plantedAt = now;
+  S.plot.mustWaterUntil = now + CFG.preWaterSec*1000;
+  setHeader(); setPlotView(); save();
+}
+
+function water(){
+  if(!(S.plot.state==="PLANTED" || S.plot.state==="NEED_WATER")){ alert("Пока не требуется полив"); return; }
+  if(S.water<=0){ alert("Нет воды"); return; }
+  if(Date.now() > S.plot.mustWaterUntil){ S.plot.state="WITHERED"; setPlotView(); return; }
+  S.water--;
+  const now = Date.now();
+  S.plot.state="GROWING";
+  S.plot.wateredAt = now;
+  S.plot.ripeAt = now + CFG.growSec*1000;
+  setHeader(); setPlotView(); save();
+}
+
+function harvest(){
+  if(S.plot.state==="RIPE"){
+    S.raw++;
+    S.plot.state="EMPTY";
+  }else if(S.plot.state==="WITHERED"){
+    S.plot.state="EMPTY"; // очищаем грядку
+  }else{
+    alert("Ещё рано собирать");
+    return;
+  }
+  setHeader(); setPlotView(); save();
+}
+
+// ====== ACTIONS (shop/resources) ======
+function buySeed(){
+  if(S.money<CFG.seedPrice){ alert("Недостаточно средств"); return; }
+  S.money -= CFG.seedPrice; S.seeds++;
+  setHeader(); save();
+}
+function buyWater(){
+  if(S.money<CFG.waterPrice){ alert("Недостаточно средств"); return; }
+  S.money -= CFG.waterPrice; S.water++;
+  setHeader(); save();
+}
+
+// ====== ACTIONS (processing) ======
+function carve(n){
+  n = Math.min(n, S.raw);
+  if(n<=0) return;
+  S.raw -= n; S.carved += n;
+  setHeader(); setPrices(); save();
+}
+
+// ====== ACTIONS (exchange) ======
+function buyAsset(kind, n){
+  const price = kind==="raw" ? S.prices.raw : S.prices.carved;
+  const cost = price * n;
+  if(S.money < cost){ alert("Недостаточно средств"); return; }
+  S.money -= cost;
+  if(kind==="raw") S.raw += n; else S.carved += n;
+  setHeader(); setPrices(); save();
+}
+function sell(kind, n){
+  if(kind==="raw"){ n=Math.min(n,S.raw); if(n<=0) return; S.raw-=n; S.money += Math.round(S.prices.raw*n); }
+  else { n=Math.min(n,S.carved); if(n<=0) return; S.carved-=n; S.money += Math.round(S.prices.carved*n); }
+  setHeader(); setPrices(); save();
+}
+
+// ====== BIND ======
+function bind(){
+  // field
+  $("#plantBtn").onclick = plant;
+  $("#waterBtn").onclick = water;
+  $("#harvestBtn").onclick = harvest;
+  // shop
+  $("#buySeed").onclick = buySeed;
+  $("#buyWater").onclick = buyWater;
+  // processing
+  $("#carve1").onclick = ()=>carve(1);
+  $("#carveAll").onclick = ()=>carve(S.raw);
+  // exchange buy/sell
+  $("#buyRaw1").onclick = ()=>buyAsset("raw",1);
+  $("#buyRaw10").onclick = ()=>buyAsset("raw",10);
+  $("#buyCarved1").onclick = ()=>buyAsset("carved",1);
+  $("#buyCarved10").onclick = ()=>buyAsset("carved",10);
+
+  $("#sellRaw10").onclick = ()=>sell("raw",10);
+  $("#sellRawAll").onclick = ()=>sell("raw",S.raw);
+  $("#sellCarved10").onclick = ()=>sell("carved",10);
+  $("#sellCarvedAll").onclick = ()=>sell("carved",S.carved);
+
+  $("#tickNow").onclick = ()=>tickPrices(true);
+
+  // save
+  $("#saveBtn").onclick = save;
+  $("#resetBtn").onclick = ()=>{
+    if(!confirm("Сбросить прогресс?")) return;
+    localStorage.removeItem("zf_pumpkin_square_trade"); location.reload();
+  };
+  $("#exportBtn").onclick = ()=>{
+    const blob = new Blob([JSON.stringify(S,null,2)],{type:"application/json"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "pumpkin_square_trade_save.json"; a.click();
+  };
+  $("#importBtn").onclick = ()=>{
+    const input = document.createElement("input");
+    input.type="file"; input.accept="application/json";
+    input.onchange = async ()=>{
+      const f = input.files[0]; if(!f) return;
+      try{ const txt = await f.text(); const x = JSON.parse(txt);
+        if(x && typeof x==="object"){ S={...S, ...x}; save(); hydrate(); }
+      }catch(e){ alert("Некорректный файл"); }
+    };
+    input.click();
+  };
+}
+
+// ====== INIT / LOOP ======
+function hydrate(){
+  setHeader();
+  setPlotView();
+  setPrices();
+}
+function autosave(){ save(); }
+
+load();
+hydrate();
+bind();
+setInterval(()=>{
+  setPlotView(); // обновление таймеров
+  tickPrices(false);
+}, 1000);
+setInterval(autosave, CFG.autosaveSec*1000);
+</script>
+</body>
+</html>

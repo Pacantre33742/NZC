@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pumpkin Forge — A Zinken Forge Project</title><link rel="icon" href="icons/pumpkin.ico">
+<style>
+:root{--bg:#0a0f14;--panel:#0e131b;--ink:#eaf0f7;--muted:#a8b2c8;--line:rgba(255,255,255,.12);--ok:#57e389;--bad:#ff6b6b;--warn:#ffc24d;--info:#79c0ff;--accent:#ff8c2f}
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;background:radial-gradient(1200px 600px at 50% 100%,#123a19 0%, #0a0f14 60%);color:var(--ink);font:15px/1.45 Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;overflow-x:hidden}
+a{color:inherit;text-decoration:none}.btn{cursor:pointer;background:#0f1621;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-weight:600}
+.btn:hover{border-color:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.08)}
+.top-buttons{position:fixed;right:12px;top:10px;z-index:900;display:flex;gap:10px}.sound{width:42px;text-align:center}
+.header{position:sticky;top:0;z-index:5;padding:10px 14px;background:rgba(10,15,20,.75);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{font-weight:800;letter-spacing:.4px}.brand b{color:var(--accent)}.sp{flex:1 1 auto}
+.statpill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:#10131a;font-weight:600;white-space:nowrap}
+.wrap{display:grid;grid-template-columns:320px 1fr;gap:18px;padding:14px;min-height:100vh}
+.panel{background:rgba(10,14,22,.85);border:1px solid var(--line);border-radius:14px;padding:14px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.title{font-weight:700}.nav-arrows{display:flex;gap:8px}.muted{color:var(--muted)}.footer{padding:12px 14px;color:var(--muted);border-top:1px solid var(--line);margin-top:8px}
+.garden-panel{padding:8px;position:relative}.soil{margin:10px auto;width:min(980px,96vw);background:linear-gradient(180deg,#1a351d,#122016);border:3px solid #5a3d1f;border-radius:16px;padding:18px;box-shadow:inset 0 0 30px #0a0f14}
+.grid-wrap{display:grid;grid-template-columns:40px 1fr;gap:10px;align-items:start}.scarecol{display:grid;gap:14px}
+.scare{height:64px;display:flex;align-items:center;justify-content:center;border:1px dashed rgba(255,255,255,.18);border-radius:10px;background:#0f1a12;cursor:pointer;position:relative}
+.scare.owned{background:#132516;border-style:solid;border-color:#2a6c3a}.scare .ico{font-size:18px}.scare .tag{position:absolute;bottom:6px;font-size:10px;opacity:.8}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(6,1fr)}.slot{height:64px;background:linear-gradient(180deg,#1a381f,#0f2614);border:1px solid rgba(0,0,0,.6);border-radius:10px;position:relative;overflow:hidden}
+.slot .dash{position:absolute;inset:8px;border-radius:8px;border:1px dashed rgba(255,255,255,.12);pointer-events:none}
+.badge{position:absolute;top:6px;right:6px;font-size:11px;padding:3px 6px;border-radius:8px;border:1px solid var(--line);background:#0d121c}
+.b-water{color:var(--info);border-color:#295f8a}.b-grow{color:#b6ffb2;border-color:#2b6c3a}.b-dead{color:#ffd1d1;border-color:#6b2b2b}
+.b-ready{color:#c8ffe0;border-color:#2b6c3a}.b-eaten{color:#ffe0ad;border-color:#7a5520}
+.timer{position:absolute;left:8px;bottom:6px;font-size:11px;color:#d6e3ff;background:rgba(0,0,0,.25);padding:2px 6px;border-radius:6px;border:1px solid rgba(255,255,255,.12)}
+.hint{color:var(--muted);font-size:12px;margin-top:6px}.locked-row{opacity:.35;filter:grayscale(40%)}.unlock{position:absolute;left:6px;top:6px;font-size:11px;padding:4px 8px;background:#24150b;border:1px solid #6b3b13;border-radius:8px;cursor:pointer}
+.statgrid{display:flex;flex-direction:column;gap:8px}.statline{border:1px solid var(--line);background:#0b1020;border-radius:10px;padding:8px}
+table.pr{width:100%;border-collapse:collapse;margin-top:6px}table.pr td{padding:6px 8px;border-bottom:1px solid var(--line)}table.pr tr:hover{background:#0f1420}
+.toast{position:fixed;right:14px;bottom:14px;background:#111725;color:#eaf0f7;border:1px solid var(--line);border-radius:10px;padding:10px 12px;opacity:0;transform:translateY(10px);transition:.25s;z-index:1200}
+.toast.show{opacity:1;transform:translateY(0)}.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:1100}
+.modal .box{background:#0f1621;border:1px solid var(--line);border-radius:14px;padding:18px;width:min(520px,92vw)}.box h3{margin:0 0 8px 0}.box .row{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
+
+.seed.lock{opacity:.45;filter:grayscale(100%);cursor:not-allowed}
+.btn.danger{background:#1e1111;border-color:#a33}.btn.danger:hover{box-shadow:0 0 0 2px rgba(255,80,80,.25)}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  [...document.querySelectorAll('a,button,li')].forEach(el => {
+    if (el.textContent && el.textContent.trim().toLowerCase() === 'event') {
+      el.remove();
+    }
+  });
+});
+</script>
+
+</head>
+<body>
+
+<script>
+(function(){
+  const LEGACY_KEYS = ['pf_save_v3', 'pf_save_v3', 'pf_save_v3', 'pf_save_v3', 'pf_save_v3', 'pf_save_v3'];
+  try { LEGACY_KEYS.forEach(k => localStorage.removeItem(k)); } catch(e) {}
+  try { localStorage.setItem('pf_migrated_to_v3','1'); } catch(e) {}
+})();
+</script>
+
+<div class="top-buttons"><a href="https://zinkenforge.ru" class="btn">← Вернуться на сайт</a><button class="btn sound" id="btnSound">🔊</button></div>
+<div class="header">
+  <div class="brand">🎃 <b>Pumpkin Forge</b></div><div class="sp"></div>
+  
+  
+  
+  
+  
+</div>
+<div class="wrap">
+  <aside class="panel">
+    <div class="top"><div class="title"><span id="sectionTitle">Статистика</span></div><div class="nav-arrows"><button class="btn" id="prevSec">←</button><button class="btn" id="nextSec">→</button></div></div>
+    <div id="sectionBody"></div>
+    <div class="footer muted">Стрелками листай разделы: Статистика → Магазин → Дом резчика → Биржа → Ребёрт.</div>
+  </aside>
+  <main class="panel garden-panel">
+    <div class="top">
+      <div class="title">Огород 5×6</div>
+      <div class="row">
+        <button class="btn seed" data-seed="classic">Классические — 20$</button>
+        <button class="btn seed" data-seed="rare">Эпические — 35$</button>
+        <button class="btn seed" data-seed="epic">Мифические — 60$</button>
+        <button class="btn seed" data-seed="mythic">Легендарные — 100$</button>
+      </div>
+      
+    </div>
+    <div class="soil"><div id="rowsContainer"></div><div class="hint">Посадка → Полив (через 30с) → Рост (до 60с) → Сбор. Пугало 🪶 ставится кликом по иконке ряда.</div></div>
+  </main>
+</div>
+<div class="toast" id="toast">💾 Прогресс сохранён</div>
+<div class="modal" id="modal"><div class="box"><h3 id="modalTitle">Заголовок</h3><div id="modalBody">Текст</div><div class="row"><button class="btn" id="modalClose">Ок</button></div></div></div>
+<script>
+// Sounds
+const S={click:new Audio('assets/click.mp3'),water:new Audio('assets/water.mp3'),crow:new Audio('assets/crow.mp3'),harvest:new Audio('assets/harvest.mp3'),cut:new Audio('assets/cut.mp3'),notification:new Audio('assets/notification.mp3'),rebirth:new Audio('assets/rebirth.mp3'),music:new Audio('assets/calm_theme.mp3')};
+for(const k in S){S[k].volume=(k==='music')?0.0:0.4} S.music.loop=true;
+function fadeInMusic(){S.music.currentTime=0;S.music.play().catch(()=>{});let v=0.0;const t=setInterval(()=>{v+=.05;if(v>=.25){v=.25;clearInterval(t)}S.music.volume=v},150)}
+let soundOn=true;document.getElementById('btnSound').onclick=()=>{soundOn=!soundOn;document.getElementById('btnSound').textContent=soundOn?'🔊':'🔈';const vol=soundOn?0.4:0.0;for(const k in S){S[k].volume=(k==='music')?(soundOn?.25:0.0):vol} if(soundOn)S.click.play().catch(()=>{})}
+function play(a){if(soundOn)a.play().catch(()=>{})}
+setTimeout(()=>{
+  const sp=document.getElementById('splash');
+  if(!sp) return;
+  sp.classList.add('fade-out');
+  fadeInMusic();
+  setTimeout(()=>{ try{ sp.remove(); }catch(e){} }, 1500);
+},6000);
+
+// splash removed
+setTimeout(()=>{ const sp=document.getElementById('splash'); if(sp){ try{ sp.remove(); }catch(e){} } }, 11000);
+
+// utils
+function el(t,c){const e=document.createElement(t);if(c)e.className=c;return e}
+function fmt(s){const m=Math.floor(s/60),sec=s%60;return (m>0?(String(m).padStart(2,'0')+':'):'')+String(sec).padStart(2,'0')}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);play(S.notification)}
+function showModal(t,b){const m=document.getElementById('modal');document.getElementById('modalTitle').textContent=t;document.getElementById('modalBody').innerHTML=b;m.style.display='flex'}
+document.getElementById('modalClose').onclick=()=>document.getElementById('modal').style.display='none';
+// config & state
+const CFG={cols:6,rows:5,seedInfo:{classic:{cost:20,bad:.25,label:'Классические',needRebirth:0},rare:{cost:35,bad:.15,label:'Эпические',needRebirth:2},epic:{cost:60,bad:.10,label:'Мифические',needRebirth:3},mythic:{cost:100,bad:.05,label:'Легендарные',needRebirth:4}},waterReadySec:30,matureSec:60,dieAfterNeedWaterSec:60,prices:{classic:40,rare:70,epic:120,mythic:200,GOLD:1000,CARVE_MULT:1.5},crowChancePerMin:.18,scarecrowCost:150,rowCosts:[0,250,500,1000,1500],waterRefillAmt:40,waterRefillCost:100,waterCapStep:10,waterCapCost:250,handsStep:10,handsCost:150,autosaveSec:30};
+let state={money:100,selectedSeed:'classic',basket:[],handsCap:20,water:40,waterCap:40,rebirth:0,rowsUnlocked:[true,false,false,false,false],scarecrows:[false,false,false,false,false],goldCooldown:3,stats:{sold:0,carved:0,gold:0,totalHarvest:0,spoiled:0,eaten:0,timeStart:Date.now()}};
+// save/load
+const KEY='pumpkin_forge_v13';function save(){localStorage.setItem(KEY,JSON.stringify(state));toast('💾 Прогресс сохранён.')}function load(){try{const r=localStorage.getItem(KEY);if(r){const s=JSON.parse(r);state=Object.assign(state,s);if(!Array.isArray(state.rowsUnlocked))state.rowsUnlocked=[true,false,false,false,false];if(!Array.isArray(state.scarecrows))state.scarecrows=[false,false,false,false,false]}}catch(e){}}load();setInterval(save,CFG.autosaveSec*1000);
+// header
+function countBasket(){const r={total:0,classic:0,rare:0,epic:0,mythic:0,gold:0,carved:0};for(const it of state.basket){r[it.kind]=(r[it.kind]||0)+1;r.total++}return r}
+function updateHeader(){const c=countBasket();hMoney.textContent=Math.floor(state.money);hBasket.textContent=c.total+' шт.';hHands.textContent=c.total+' / '+state.handsCap;hWater.textContent=state.water+' / '+state.waterCap;hRebirth.textContent=state.rebirth;const ws=document.getElementById('waterStock');if(ws){ws.textContent='💧 Запас воды: '+state.water+' / '+state.waterCap;
+  try{
+    const ws=document.getElementById('waterStock'); if(ws){ ws.textContent='💧 Запас воды: '+state.water+' / '+state.waterCap; }
+    const gm=document.getElementById('gardenMoney'); if(gm){ gm.textContent='💰 Баланс: $'+Math.floor(state.money); }
+    const gh=document.getElementById('gardenHands'); if(gh){ 
+      const c=countBasket(); gh.textContent='🤲 Вместимость: '+c.total+' / '+state.handsCap;
+    }
+  }catch(e){}
+}}
+const rowsContainer=document.getElementById('rowsContainer');const cells=[];
+function buildGarden(){rowsContainer.innerHTML='';cells.length=0;for(let r=0;r<CFG.rows;r++){const rowWrap=el('div','rowwrap');rowWrap.style.position='relative';const rowLocked=!state.rowsUnlocked[r];if(rowLocked)rowWrap.classList.add('locked-row');if(rowLocked){const u=el('button','unlock');u.textContent='Разблокировать ряд — $'+CFG.rowCosts[r];u.onclick=()=>{const cost=CFG.rowCosts[r];if(state.money<cost){showModal('Недостаточно средств','Нужно $'+cost);return}state.money-=cost;state.rowsUnlocked[r]=true;buildGarden();
+try{ refreshSeedButtons(); }catch(e){}
+
+try{ if(typeof refreshSeedButtons==='function') refreshSeedButtons(); }catch(e){}
+updateHeader()};rowWrap.appendChild(u)}
+const sc=el('div','scare'+(state.scarecrows[r]?' owned':''));sc.innerHTML='<div class="ico">🪶</div><div class="tag">'+(r+1)+' ряд</div>';sc.title=state.scarecrows[r]?'Пугало установлено':'Купить пугало ($'+CFG.scarecrowCost+')';sc.onclick=()=>{if(!state.rowsUnlocked[r])return;if(state.scarecrows[r]){showModal('Пугало','Уже установлено.');return}if(state.money<CFG.scarecrowCost){showModal('Недостаточно средств','Нужно $'+CFG.scarecrowCost);return}state.money-=CFG.scarecrowCost;state.scarecrows[r]=true;buildGarden();updateHeader();play(S.click)};const scareCol=el('div','scarecol');scareCol.appendChild(sc);rowWrap.appendChild(scareCol);
+const grid=el('div','grid');for(let c=0;c<CFG.cols;c++){const slot=el('div','slot');slot.dataset.r=r;slot.dataset.c=c;slot.innerHTML='<div class="dash"></div><div class="timer" style="display:none">00:00</div>';if(rowLocked)slot.style.pointerEvents='none';grid.appendChild(slot);const cell={r,c,el:slot,seed:null,plantedAt:0,waterReadyAt:0,wateredAt:0,matureAt:0,deathDeadline:0,eaten:false,dead:false};cells.push(cell);slot.onclick=()=>onSlot(cell)}rowWrap.appendChild(grid);rowsContainer.appendChild(rowWrap)}}
+buildGarden();
+function refreshSeedButtons(){
+  document.querySelectorAll('.seed').forEach(btn=>{
+    const t = btn.dataset.seed;
+    const need = (CFG.seedInfo[t] && CFG.seedInfo[t].needRebirth) || 0;
+    btn.classList.remove('lock');
+    btn.disabled = false;
+    btn.removeAttribute('title');
+    if(state.rebirth < need){
+      btn.classList.add('lock');
+      btn.disabled = true;
+      btn.title = 'Доступно с Rebirth ' + need;
+    }
+  });
+}
+// seed select
+document.querySelectorAll('.seed').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.seed').forEach(x=>x.classList.remove('active'));b.classList.add('active');state.selectedSeed=b.dataset.seed;play(S.click)}));
+document.querySelector('[data-seed="'+state.selectedSeed+'"]')?.classList.add('active');
+function rollGolden(){ if(state.goldCooldown>0){state.goldCooldown--; return false;} const ok=Math.random()<0.02; if(ok) state.goldCooldown=3; return ok; }
+function priceFor(kind,good,carved){if(kind==='gold')return CFG.prices.GOLD;const base=CFG.prices[kind]||0;const q=good?base:Math.max(5,base*.6);return carved?Math.round(q*CFG.prices.CARVE_MULT):q}
+function resetCell(cell){Object.assign(cell,{seed:null,plantedAt:0,waterReadyAt:0,wateredAt:0,matureAt:0,deathDeadline:0,eaten:false,dead:false})}
+function drawCell(cell){const el=cell.el;el.querySelectorAll('.badge')?.forEach(b=>b.remove());const t=el.querySelector('.timer');t.style.display='none';if(cell.eaten){addBadge(el,'Съедено воронами','b-eaten');return}if(cell.dead){addBadge(el,'Испортилось','b-dead');return}if(!cell.seed)return;const now=performance.now();if(cell.wateredAt===0){if(now<cell.waterReadyAt){addBadge(el,'Ожидает полива','b-water');const left=Math.max(0,Math.ceil((cell.waterReadyAt-now)/1000));t.textContent='До полива: '+fmt(left);t.style.display='block'}else{if(!cell.deathDeadline)cell.deathDeadline=now+CFG.dieAfterNeedWaterSec*1000;const left=Math.max(0,Math.ceil((cell.deathDeadline-now)/1000));if(left>0){addBadge(el,'Полив','b-water');t.textContent='Погибнет через: '+fmt(left);t.style.display='block'}else{cell.dead=true;addBadge(el,'Испортилось','b-dead')}}}else{if(now<cell.matureAt){addBadge(el,'Рост','b-grow');const left=Math.max(0,Math.ceil((cell.matureAt-now)/1000));t.textContent='До сбора: '+fmt(left);t.style.display='block'}else{addBadge(el,'Готово','b-ready');t.textContent='Собери';t.style.display='block'}}}
+function addBadge(el,txt,cls){const b=document.createElement('div');b.className='badge '+cls;b.textContent=txt;el.appendChild(b)}
+function onSlot(cell){const now=performance.now();if(cell.eaten||cell.dead){resetCell(cell);drawCell(cell);return}if(cell.seed&&cell.wateredAt>0&&now>=cell.matureAt){const c=countBasket();if(c.total>=state.handsCap){showModal('Руки переполнены','Продай урожай на бирже или увеличь вместимость.');return}const info=CFG.seedInfo[cell.seed]||CFG.seedInfo.classic;const bad=Math.random()<info.bad;const golden=rollGolden();const kind=golden?'gold':cell.seed;state.basket.push({kind,good:!bad,carved:false,at:Date.now()});if(golden)state.stats.gold++;state.stats.totalHarvest++;play(S.harvest);resetCell(cell);drawCell(cell);updateHeader();renderSection();return}
+if(cell.seed&&cell.wateredAt===0){if(now<cell.waterReadyAt){showModal('Рано поливать','Подожди таймер «До полива».');return}if(state.water<=0){showModal('Нет воды','Купи воду в Магазине.');return}state.water-=1;play(S.water);cell.wateredAt=now;cell.matureAt=now+CFG.matureSec*1000;cell.deathDeadline=0;drawCell(cell);updateHeader();return}
+if(!cell.seed){const info=CFG.seedInfo[state.selectedSeed]||CFG.seedInfo.classic;if(state.money<info.cost){showModal('Недостаточно средств','Нужно $'+info.cost);return}state.money-=info.cost;play(S.click);Object.assign(cell,{seed:state.selectedSeed,plantedAt:now,waterReadyAt:now+CFG.waterReadySec*1000,wateredAt:0,matureAt:0,deathDeadline:0,eaten:false,dead:false});drawCell(cell);updateHeader();renderSection();return}
+showModal('Ещё растёт…','Дождись «До сбора».')}
+// ticks
+setInterval(()=>{for(const c of cells)drawCell(c);for(const k of ['classic','rare','epic','mythic']){const d=(Math.random()-0.5)*22;CFG.prices[k]=Math.max(8,Math.round(CFG.prices[k]+d))}updateHeader()},1000);
+// crows
+setInterval(()=>{if(Math.random()<CFG.crowChancePerMin){const rows=[];for(let r=0;r<CFG.rows;r++)if(state.rowsUnlocked[r]&&!state.scarecrows[r])rows.push(r);if(!rows.length)return;const row=rows[Math.floor(Math.random()*rows.length)];const cand=cells.filter(c=>c.r===row&&c.seed&&((c.wateredAt===0)||(performance.now()<c.matureAt)));if(cand.length){const v=cand[Math.floor(Math.random()*cand.length)];v.eaten=true;state.stats.eaten++;drawCell(v);play(S.crow)}}},60000);
+// sections
+const sections=['stats','shop','cutter','exchange','rebirth'];let si=0;let cur=sections[si];
+const sectionTitle=document.getElementById('sectionTitle');const sectionBody=document.getElementById('sectionBody');
+prevSec.onclick=()=>{si=(si-1+sections.length)%sections.length;switchSec()};nextSec.onclick=()=>{si=(si+1)%sections.length;switchSec()};
+function switchSec(){cur=sections[si];const t={info:'Инфо', stats:'Статистика',shop:'Магазин',cutter:'Дом резчика',exchange:'Биржа',rebirth:'Ребёрт'};sectionTitle.textContent=t[cur]||cur;renderSec()}
+switchSec();
+function renderSec(){
+ if(cur==='info'){
+   const c = countBasket();
+   sectionBody.innerHTML = `
+     <div class="statgrid">
+       <div class="statline">💰 Баланс: <b>$${Math.floor(state.money)}</b></div>
+       <div class="statline">🧺 Корзина (в руках): <b>${c.total} / ${state.handsCap}</b></div>
+       <div class="statline">💧 Вода: <b>${state.water} / ${state.waterCap}</b></div>
+       <div class="statline">📈 Ребёрт: <b>${state.rebirth}</b></div>
+       <div class="statline">🧱 Рядов открыто: <b>${1 + state.rowsUnlocked.filter(Boolean).length}</b> из 6</div>
+     </div>`;
+   updateHeader();
+   return;
+ }
+
+ if(cur==='stats'){const c=countBasket();sectionBody.innerHTML=`
+  <div class="statgrid">
+    <div class="statline">💰 Баланс: <b>$${Math.floor(state.money)}</b></div>
+    <div class="statline">💧 Вода: <b>${state.water}/${state.waterCap}</b></div>
+    <div class="statline">🤲 Вместимость: <b>${c.total}/${state.handsCap}</b></div>
+    <div class="statline">🧺 Корзина:
+      <div>Классические: ${c.classic}</div>
+      <div>Эпические: ${c.rare}</div>
+      <div>Мифические: ${c.epic}</div>
+      <div>Легендарные: ${c.mythic}</div>
+      <div>Золотые: ${c.gold}</div>
+      <div>Нарезанные: ${c.carved}</div>
+    </div>
+    <div class="statline">📈 Ребёрт: <b>${state.rebirth}</b></div>
+  </div>
+  <div class="row" style="margin-top:10px;">
+    <button class="btn danger" id="btnReset">Начать всё сначала</button>
+  </div>
+`}
+ if(cur==='shop'){
+  sectionBody.innerHTML = `
+    <div class="row">
+      <button class="btn" id="buyWater">Купить воду (+${CFG.waterRefillAmt}) — $${CFG.waterRefillCost}</button>
+      <button class="btn" id="upWater">Улучшить бак (+${CFG.waterCapStep}) — $${CFG.waterCapCost}</button>
+      <button class="btn" id="upHands">Улучшить руки (+${CFG.handsStep}) — $${CFG.handsCost}</button>
+    </div>
+    <div class="row" id="rowBuyWrap"></div>
+    <div class="muted">Семена выбираются и отображаются только возле огорода. Покупка рядов — здесь.</div>`;
+
+  // Resource controls
+  sectionBody.querySelector('#buyWater').onclick=()=>{
+    if(state.money<CFG.waterRefillCost) return showModal('Недостаточно средств','Нужно $'+CFG.waterRefillCost);
+    state.money-=CFG.waterRefillCost; state.water=Math.min(state.waterCap,state.water+CFG.waterRefillAmt);
+    play(S.click); updateHeader(); renderSec();
+  };
+  sectionBody.querySelector('#upWater').onclick=()=>{
+    if(state.money<CFG.waterCapCost) return showModal('Недостаточно средств','Нужно $'+CFG.waterCapCost);
+    state.money-=CFG.waterCapCost; state.waterCap+=CFG.waterCapStep;
+    play(S.click); updateHeader(); renderSec();
+  };
+  sectionBody.querySelector('#upHands').onclick=()=>{
+    if(state.money<CFG.handsCost) return showModal('Недостаточно средств','Нужно $'+CFG.handsCost);
+    state.money-=CFG.handsCost; state.handsCap+=CFG.handsStep;
+    play(S.click); updateHeader(); renderSec();
+  };
+
+  // Buy Row dynamic
+  (function(){
+    const wrap = sectionBody.querySelector('#rowBuyWrap');
+    const opened = 1 + (state.rowsUnlocked ? state.rowsUnlocked.filter(Boolean).length : 0);
+    const btn = document.createElement('button'); btn.className='btn'; btn.id='buyRow';
+    if(opened < 6){
+      const next = opened + 1;
+      const cost = 500 * (next - 1);
+      btn.textContent = `Купить новый ряд — $${cost}`;
+      btn.onclick = ()=>{
+        const openedNow = 1 + (state.rowsUnlocked ? state.rowsUnlocked.filter(Boolean).length : 0);
+        if(openedNow >= 6) return;
+        const nxt = openedNow + 1;
+        const cst = 500 * (nxt - 1);
+        if(state.money < cst){ showModal('Недостаточно средств','Нужно $'+cst); return; }
+        state.money -= cst;
+        if(!Array.isArray(state.rowsUnlocked)) state.rowsUnlocked=[true,false,false,false,false];
+        state.rowsUnlocked[openedNow-1] = true;
+        if(typeof buildGarden==='function') buildGarden();
+        updateHeader(); renderSec(); if(typeof save==='function') save();
+      };
+    } else {
+      btn.textContent = 'Все ряды куплены ✅';
+      btn.disabled = true;
+    }
+    wrap.appendChild(btn);
+  })();
+}
+if(cur==='cutter'){const c=countBasket();const can=(c.classic+c.rare+c.epic+c.mythic)>0;sectionBody.innerHTML=`
+  <div class="statline">Нарезанные тыквы: <b>${c.carved}</b></div>
+  <div class="row"><button class="btn" id="cutOne" ${can?'':'disabled'}>Нарезать 1 тыкву (5 сек)</button></div>
+  <div class="muted">Нарезанная тыква продаётся дороже (×${CFG.prices.CARVE_MULT}).</div>
+  <div id="cutStatus" class="muted"></div>`;
+  sectionBody.querySelector('#cutOne').onclick=()=>{const i=state.basket.findIndex(x=>x.kind!=='gold'&&x.kind!=='carved');if(i<0)return showModal('Нет тыкв','Сначала собери урожай.');state.basket.splice(i,1);document.getElementById('cutStatus').textContent='Режем… (5 сек)';play(S.cut);setTimeout(()=>{state.basket.push({kind:'carved',good:true,carved:true,at:Date.now()});state.stats.carved++;document.getElementById('cutStatus').textContent='Готово: +1 нарезанная тыква.';renderSec();updateHeader()},5000)};
+ }
+ if(cur==='exchange'){const c=countBasket();sectionBody.innerHTML=`
+  <div class="statline"><b>Рыночные цены</b>
+    <table class="pr">
+      <tr><td>Классические</td><td><b>$${CFG.prices.classic}</b></td><td>В корзине: ${c.classic}</td></tr>
+      <tr><td>Эпические</td><td><b>$${CFG.prices.rare}</b></td><td>В корзине: ${c.rare}</td></tr>
+      <tr><td>Мифические</td><td><b>$${CFG.prices.epic}</b></td><td>В корзине: ${c.epic}</td></tr>
+      <tr><td>Легендарные</td><td><b>$${CFG.prices.mythic}</b></td><td>В корзине: ${c.mythic}</td></tr>
+      <tr><td>Золотые</td><td><b>$${CFG.prices.GOLD}</b></td><td>В корзине: ${c.gold}</td></tr>
+      <tr><td>Нарезанные</td><td><b>×${CFG.prices.CARVE_MULT}</b></td><td>В корзине: ${c.carved}</td></tr>
+    </table>
+  </div>
+  <div class="row">
+    <button class="btn" id="sellAll">Продать всё (${c.total})</button>
+    <button class="btn sell" data-kind="classic">Продать классические (${c.classic})</button>
+    <button class="btn sell" data-kind="rare">Продать эпические (${c.rare})</button>
+    <button class="btn sell" data-kind="epic">Продать мифические (${c.epic})</button>
+    <button class="btn sell" data-kind="mythic">Продать легендарные (${c.mythic})</button>
+    <button class="btn sell" data-kind="gold">Продать золотые (${c.gold})</button>
+    <button class="btn sell" data-kind="carved">Продать нарезанные (${c.carved})</button>
+  </div>
+  <div id="sellResult" class="muted"></div>`;
+  function doSell(fn,label){let sold=0,sum=0,rest=[];for(const p of state.basket){if(fn(p)){sum+=priceFor(p.kind,p.good,p.kind==='carved');sold++}else rest.push(p)}state.basket=rest;state.money+=sum;state.stats.sold+=sold;document.getElementById('sellResult').textContent=`${label}: продано ${sold}, +$${Math.round(sum)}`;play(S.click);updateHeader();renderSec()}
+  document.getElementById('sellAll').onclick=()=>doSell(()=>true,'Все');
+  sectionBody.querySelectorAll('.sell').forEach(b=>b.onclick=()=>{const k=b.dataset.kind;doSell(p=>p.kind===k,b.textContent)});
+ }
+ if(cur==='rebirth'){
+  sectionBody.innerHTML=`
+    <div class="statline"><b>Текущий уровень:</b> ${state.rebirth}</div>
+    <div class="row">
+      <button class="btn" id="checkRb">Проверить возможность</button>
+      <button class="btn" id="doRb" disabled>Переродиться</button>
+    </div>
+    <div id="rbHint" class="muted"></div>`;
+
+  let can = false;
+  const checkBtn = sectionBody.querySelector('#checkRb');
+  const doBtn = sectionBody.querySelector('#doRb');
+  const hint = sectionBody.querySelector('#rbHint');
+
+  checkBtn.onclick = () => {
+    const r = chkRbExplain();
+    if (r.ok) {
+      can = true;
+      if (doBtn) doBtn.disabled = false;
+      hint.textContent = '✅ Перерождение доступно.';
+      showModal('Проверка условий', '✅ Перерождение доступно.');
+    } else {
+      can = false;
+      if (doBtn) doBtn.disabled = true;
+      let msg = r.msg || '';
+      const m = msg.match(/(\d+)\s*\/\s*(\d+)/);
+      if (m) {
+        const a = parseInt(m[1],10), b = parseInt(m[2],10);
+        msg = `Нужно: ${b} / Осталось: ${Math.max(0,b-a)}`;
+      }
+      hint.textContent = msg;
+      showModal('Проверка условий', msg);
+    }
+    try{ S.click.currentTime=0; S.click.play(); }catch(_){}
+  };
+
+  doBtn.onclick = () => {
+    // дополнительная проверка
+    const okNow = chkRb();
+    if (!can && !okNow) return;
+    state.rebirth = (state.rebirth||0) + 1;
+    try{ refreshSeedButtons(); }catch(e){}
+try{ S.rebirth.currentTime=0; S.rebirth.play(); }catch(_){}
+    try{ if(typeof refreshSeedButtons==='function') refreshSeedButtons(); }catch(_){}
+    try{ if(typeof save==='function') save(); }catch(_){}
+    showModal('Перерождение', `<p>🎉 Поздравляем! Уровень Rebirth ${state.rebirth} достигнут.</p>`);
+    updateHeader(); renderSec();
+  };
+}
+ updateHeader();
+}
+
+function chkRb(){
+  // Rebirth I: must have at least one scarecrow purchased
+  if(state.rebirth===0) {
+    try{ return Array.isArray(state.scarecrows) && state.scarecrows.some(Boolean); }catch(_){ return false; }
+  }
+  if(state.rebirth===1) return (state.stats && state.stats.sold>=20);
+  if(state.rebirth===2) return (state.money>=5000);
+  if(state.rebirth===3) return (state.stats && state.stats.carved>=10);
+  if(state.rebirth===4) return (state.money>=25000);
+  return false;
+}
+
+
+function chkRbExplain(){
+  if(state.rebirth===0){
+    const ok = Array.isArray(state.scarecrows) && state.scarecrows.some(Boolean);
+    return ok ? {ok:true,msg:'Готов к Rebirth I'} : {ok:false,msg:'Нужно: пугало (1 шт) / Осталось: 1'};
+  }
+  if(state.rebirth===1){
+    const need=20, have=(state.stats?.sold||0);
+    return have>=need ? {ok:true,msg:'Готов к Rebirth II'} : {ok:false,msg:'Нужно: '+need+' / Осталось: '+Math.max(0,need-have)};
+  }
+  if(state.rebirth===2){
+    const need=5000, have=Math.floor(state.money||0);
+    return have>=need ? {ok:true,msg:'Готов к Rebirth III'} : {ok:false,msg:'Нужно: '+need+' / Осталось: '+Math.max(0,need-have)};
+  }
+  if(state.rebirth===3){
+    const need=10, have=(state.stats?.carved||0);
+    return have>=need ? {ok:true,msg:'Готов к Rebirth IV'} : {ok:false,msg:'Нужно: '+need+' / Осталось: '+Math.max(0,need-have)};
+  }
+  if(state.rebirth===4){
+    const need=25000, have=Math.floor(state.money||0);
+    return have>=need ? {ok:true,msg:'Готов к Rebirth V'} : {ok:false,msg:'Нужно: '+need+' / Осталось: '+Math.max(0,need-have)};
+  }
+  return {ok:false,msg:'Максимальный уровень достигнут.'};
+}
+// draw/tick
+const allBadges=()=>cells.forEach(drawCell);function tick(){allBadges();requestAnimationFrame(tick)}tick();updateHeader();try{ refreshSeedButtons(); }catch(e){}
+renderSec();toast('Добро пожаловать в Pumpkin Forge');
+</script>
+  <div class="card" id="saves_card" style="margin-top:16px">
+    <h3 style="margin:0 0 10px">Сохранения</h3>
+    <div class="row">
+      <button class="btn" id="pf_save_btn">Сохранить</button>
+      <button class="btn" id="pf_load_btn">Загрузить</button>
+      <button class="btn" id="pf_export_btn">Экспорт</button>
+      <button class="btn" id="pf_import_btn">Импорт</button>
+      <button class="btn" id="pf_reset_btn">Сбросить прогресс</button>
+      <span class="small">Сохранение хранится локально (в вашем браузере).</span>
+    </div>
+  </div>
+
+
+<script>
+// ----- Seeds always available: force-enable any seed buttons/controls -----
+(function(){
+  function enableSeeds(){
+    const candidates = Array.from(document.querySelectorAll('button, input, a, select'));
+    candidates.forEach(el => {
+      const t = (el.textContent || el.value || '').toLowerCase();
+      if (t.includes('семян') || t.includes('семена') || t.includes('семя') || t.includes('seed')) {
+        el.disabled = false;
+        el.classList.remove('disabled');
+        el.style.pointerEvents = 'auto';
+        el.style.opacity = '';
+      }
+    });
+  }
+  const mo = new MutationObserver(enableSeeds);
+  mo.observe(document.documentElement, {subtree:true, childList:true, attributes:true});
+  document.addEventListener('DOMContentLoaded', enableSeeds);
+  window.addEventListener('load', enableSeeds);
+  setInterval(enableSeeds, 1000);
+})();
+
+// ----- Save/Load helpers (pf_save_v3) -----
+(function(){
+  const KEY = 'pf_save_v3';
+
+  function smartSave(){
+    try{
+      if (window.S && typeof window.S === 'object') {
+        localStorage.setItem(KEY, JSON.stringify(window.S));
+      } else if (window.save && typeof window.save === 'function') {
+        // fallback to game save if provided
+        window.save();
+      } else {
+        // snapshot minimal page state (very generic fallback)
+        localStorage.setItem(KEY, JSON.stringify({ts: Date.now()}));
+      }
+      alert('Сохранено.');
+    }catch(e){ alert('Не удалось сохранить: '+e); }
+  }
+
+  function smartLoad(){
+    try{
+      const raw = localStorage.getItem(KEY);
+      if (!raw) { alert('Сохранение не найдено.'); return; }
+      const data = JSON.parse(raw);
+      if (window.S && typeof window.S === 'object') {
+        Object.assign(window.S, data);
+        // пробуем вызвать рендер-апдейтеры, если они есть
+        (window.hydrate||window.render||window.setHeader||function(){})();
+        if (window.setPlotView) window.setPlotView();
+        if (window.setPrices) window.setPrices();
+      } else if (window.load && typeof window.load === 'function') {
+        window.load();
+      }
+      alert('Загружено.');
+    }catch(e){ alert('Не удалось загрузить: '+e); }
+  }
+
+  function smartExport(){
+    try{
+      const raw = localStorage.getItem(KEY) || '{}';
+      const blob = new Blob([raw], {type:'application/json'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'pumpkin_forge_save.json';
+      a.click();
+    }catch(e){ alert('Экспорт не удался: '+e); }
+  }
+
+  function smartImport(){
+    const inp = document.createElement('input');
+    inp.type = 'file'; inp.accept = 'application/json';
+    inp.onchange = async () => {
+      const f = inp.files && inp.files[0];
+      if(!f) return;
+      try{
+        const txt = await f.text();
+        JSON.parse(txt); // проверка
+        localStorage.setItem(KEY, txt);
+        smartLoad();
+      }catch(e){ alert('Некорректный файл: '+e); }
+    };
+    inp.click();
+  }
+
+  function smartReset(){
+    if(!confirm('Стереть прогресс? Действие необратимо.')) return;
+    try{
+      localStorage.removeItem(KEY);
+      // Также сносим возможные старые ключи, если вдруг остались
+      ['zf_pumpkin_square','zf_pumpkin_square_trade','pf_save_v1','pf_save_v2','pf_save','pumpkin_save']
+        .forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});
+      location.reload();
+    }catch(e){ alert('Не удалось сбросить: '+e); }
+  }
+
+  // bind buttons if present
+  function bindSaveUI(){
+    const byId = id => document.getElementById(id);
+    byId('pf_save_btn')  && (byId('pf_save_btn').onclick  = smartSave);
+    byId('pf_load_btn')  && (byId('pf_load_btn').onclick  = smartLoad);
+    byId('pf_export_btn')&& (byId('pf_export_btn').onclick= smartExport);
+    byId('pf_import_btn')&& (byId('pf_import_btn').onclick= smartImport);
+    byId('pf_reset_btn') && (byId('pf_reset_btn').onclick = smartReset);
+  }
+  document.addEventListener('DOMContentLoaded', bindSaveUI);
+  window.addEventListener('load', bindSaveUI);
+})();
+</script>
+
+<footer style="max-width:1100px;margin:24px auto 36px;padding:0 16px;color:#9aa3b2;font-size:12px">© 2025 Zinken Forge — все права защищены.</footer>
+</body></html>
+<script>
+// глобальный делегат для кнопки сброса (чтобы не терять обработчик при перерисовке)
+document.addEventListener('click', function(e){
+  const btn = e.target.closest && e.target.closest('#btnReset');
+  if(!btn) return;
+  if(!confirm('Удалить весь прогресс и начать заново? Это действие необратимо.')) return;
+  try{ localStorage.removeItem('pumpkin_forge_v13'); }catch(_){}
+  // Базовый сброс state
+  state={money:100,selectedSeed:'classic',basket:[],handsCap:20,water:40,waterCap:40,rebirth:0,
+         rowsUnlocked:[true,false,false,false,false],scarecrows:[false,false,false,false,false],
+         goldCooldown:3,stats:{sold:0,carved:0,gold:0,totalHarvest:0,spoiled:0,eaten:0,timeStart:Date.now()}};
+  try{ buildGarden(); updateHeader(); renderSec(); }catch(_){}
+  toast('🔄 Прогресс сброшен');
+});
+</script>
+
+<script>window.pfFinalCongratsText = `🎉 Поздравляем! Ты прошёл базовый курс. Эта игра — больше, чем симуляция: она показывает, как труд, дисциплина и последовательность создают результат. Pumpkin Forge — это начало мышления Zinken Forge.`;</script>
