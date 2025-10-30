@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Zinken Forge | New Zone of Clarity</title>
+<!-- SEO base -->
+<link href="https://zinkenforge.ru/" rel="canonical"/>
+<meta content="Официальный сайт Zinken Forge — сообщество по трейдингу, финансовой аналитике и дисциплине. Добро пожаловать в New Zone of Clarity." name="description"/>
+<meta content="Zinken Forge, NZC, New Zone of Clarity, трейдинг, финансы, аналитика, обучение, дисциплина" name="keywords"/>
+<meta content="Zinken Forge | NZC" name="author"/>
+<!-- Open Graph -->
+<meta content="ru_RU" property="og:locale"/>
+<meta content="website" property="og:type"/>
+<meta content="Zinken Forge | NZC" property="og:site_name"/>
+<meta content="Zinken Forge | New Zone of Clarity" property="og:title"/>
+<meta content="Сообщество по трейдингу, аналитике и дисциплине. Action Forges Legacy." property="og:description"/>
+<meta content="https://zinkenforge.ru/" property="og:url"/>
+<!-- Open Graph Image -->
+<meta content="https://zinkenforge.ru/og-image-zinkenforge.png" property="og:image"/>
+<meta content="https://zinkenforge.ru/og-image-zinkenforge.png" property="twitter:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<!-- Twitter Card -->
+<meta content="summary" name="twitter:card"/>
+<meta content="Zinken Forge | New Zone of Clarity" name="twitter:title"/>
+<meta content="Сообщество по трейдингу, аналитике и дисциплине. Action Forges Legacy." name="twitter:description"/>
+<!-- Referrer policy -->
+<meta content="no-referrer-when-downgrade" name="referrer"/>
+<!-- Structured Data: Organization -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Zinken Forge",
+    "alternateName": "NZC — New Zone of Clarity",
+    "url": "https://zinkenforge.ru/",
+    "sameAs": [
+      "https://t.me/ZinkenForge"
+    ]
+  }
+  </script>
+<meta content="dark" name="color-scheme"/>
+<!-- Playfair Display for first two intro lines -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&amp;display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --bg1:#0b1020; --bg2:#0a0f1b; --panel:#0f172a; --line:#1e2a44;
+    --text:#e8edf8; --muted:#a3acc5; --accent:#00b7ff; --accent2:#56d2ff;
+    --accentGlow:rgba(0,183,255,.35); --whiteGlow:rgba(255,255,255,.35);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  html,body{margin:0;padding:0;background:linear-gradient(180deg,var(--bg1),var(--bg2));color:var(--text);
+            font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,Arial}
+  a{color:inherit;text-decoration:none}
+  .container{max-width:1200px;margin:0 auto;padding:24px}
+
+  /* INTRO */
+  body.lock main, body.lock header, body.lock footer{pointer-events:none; filter:blur(2px); opacity:.25}
+  .splash{position:fixed;inset:0;background:#000;display:grid;place-items:center;z-index:10000;transition:opacity .9s ease}
+  .splash.hide{opacity:0;pointer-events:none}
+  .stage{position:relative;display:grid;place-items:center;width:100%;height:70vh;padding:24px}
+  .line{opacity:0; text-align:center; filter:blur(.2px)}
+  .line span{
+    display:inline-block; letter-spacing:.01em;
+    font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,Arial; /* default for NZC */
+    font-weight:800;
+  }
+  /* Playfair ONLY for the first two lines */
+  .line.small  span,
+  .line.smaller span{
+    font-family:"Playfair Display", serif;
+    font-weight:400;
+  }
+  /* sizes */
+  .line.small  span{font-size:min(8.8vw,52px)}
+  .line.smaller span{font-size:min(8.2vw,44px)}
+  .line.big    span{font-size:min(18vw,120px); line-height:.92}
+
+  /* Glow for NZC */
+  .glow span{ color:#f6f8ff; text-shadow:
+      0 0 10px rgba(255,255,255,.70),
+      0 0 28px rgba(176,206,255,.42),
+      0 0 54px rgba(120,170,255,.26); }
+
+  @keyframes fadeIn {from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:translateY(0)}}
+  @keyframes fadeOut{from{opacity:1} to{opacity:0}}
+  .show{animation:fadeIn .8s ease forwards}
+  .hide{animation:fadeOut .8s ease forwards}
+  .skip{position:fixed;right:16px;bottom:16px;z-index:10001;padding:10px 16px;border-radius:12px;border:1px solid #fff;background:#000;color:#fff;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .35s ease, transform .35s ease, background .3s ease, box-shadow .3s ease, border-color .3s ease}
+  .skip.show{opacity:1;pointer-events:auto;transform:translateY(0)}
+  .skip:hover{background:#111;border-color:#fff;box-shadow:0 0 8px rgba(255,255,255,0.5)}
+
+  /* NAV */
+  header{position:sticky;top:0;z-index:20;background:rgba(8,13,25,.65);border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:16px; padding:14px 24px}
+  .brand{font-weight:900; letter-spacing:.04em}
+  .nav a.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;border:1px solid #1f334d;
+             background:linear-gradient(180deg,#0a1323,#0c1426);color:var(--text);cursor:pointer;
+             box-shadow:0 0 0 0 rgba(0,183,255,0); transition:box-shadow .25s ease,border-color .25s ease, color .2s ease}
+  .nav a.btn:hover{border-color:#27527a; box-shadow:0 0 18px var(--accentGlow)}
+  .nav a.btn.active{border-color:#2a6aa0; box-shadow:0 0 18px var(--accentGlow)}
+  .nav a.primary{background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#04121d; border-color:transparent; box-shadow:0 10px 28px rgba(0,183,255,.35)}
+
+  /* HERO */
+  .hero{display:grid;grid-template-columns:1.15fr 0.85fr;gap:28px;align-items:center;min-height:60vh}
+  .hero-left{justify-self:end; text-align:left; max-width:680px; transform:translateX(-4%)}
+  .headline{font-size:clamp(26px,4.4vw,48px); font-weight:800; line-height:1.15; margin:0 0 10px; text-shadow:0 0 22px var(--whiteGlow)}
+  .subline{font-size:clamp(12px,2.1vw,16px); color:#a8b2cc; letter-spacing:.02em}
+  .hero-right{justify-self:start; max-width:640px}
+  .panel{background:linear-gradient(180deg,#0d1324,#0c1220); border:1px solid var(--line); border-radius:16px; padding:22px; box-shadow:0 14px 50px rgba(0,0,0,.45)}
+  .panel h2{margin:0 0 12px; font-size:clamp(20px,3.6vw,28px)}
+  .panel p{color:#c9d3ea; line-height:1.7; margin:10px 0}
+
+  /* Sections */
+  section.block{padding-block:56px; border-top:1px solid #1b2842}
+  .cards{display:grid;grid-template-columns:1fr;gap:18px}
+  @media (min-width:820px){ .cards{grid-template-columns:1fr 1fr} }
+  .card{background:linear-gradient(180deg,#0c1221,#0a0f1b); border:1px solid #1e2a44; border-radius:16px; padding:20px 20px; box-shadow:0 10px 40px rgba(0,0,0,.35)}
+  .card h3{margin:0 0 8px}
+  .price{margin-top:10px; color:#9fdfff; font-weight:700}
+
+  .join{display:flex;justify-content:center;padding:40px 0}
+  .cta{display:inline-flex;align-items:center;gap:10px;padding:14px 18px;border-radius:14px;border:1px solid #1f334d;
+       background:linear-gradient(135deg,var(--accent),var(--accent2));color:#06131e;font-weight:800; letter-spacing:.02em;
+       box-shadow:0 12px 30px rgba(0,183,255,.35)}
+
+  .reveal{opacity:0; transform:translateY(10px); animation:up .6s ease .2s forwards}
+  @keyframes up{to{opacity:1; transform:translateY(0)}}
+
+/* Games cards fine-tuning */
+#halloween .card { display:flex; flex-direction:column; gap:8px }
+#halloween .card .cta { margin-top:8px; align-self:flex-start }
+</style>
+<!-- Favicons – Zinken Forge -->
+<link href="https://zinkenforge.ru/favicon.ico?v=6" rel="icon" sizes="any"/>
+<link href="https://zinkenforge.ru/favicon-32.png?v=6" rel="icon" sizes="32x32" type="image/png"/>
+<link href="https://zinkenforge.ru/favicon-192.png?v=6" rel="icon" sizes="192x192" type="image/png"/>
+<link href="https://zinkenforge.ru/apple-touch-icon.png?v=6" rel="apple-touch-icon"/>
+<link href="https://zinkenforge.ru/site.webmanifest" rel="manifest"/>
+<meta content="#0b1020" name="theme-color"/>
+</head>
+<body class="lock">
+<!-- INTRO -->
+<div aria-label="Последовательное приветствие" class="splash" id="splash">
+  <div class="stage">
+    <div class="line small" id="line"><span></span></div>
+  </div>
+</div>
+<button aria-label="Пропустить интро" class="skip" id="skip">Пропустить</button>
+
+<!-- NAV -->
+<header>
+  <div class="nav">
+    <div class="brand">Zinken Forge | New Zone of Clarity</div>
+    <nav id="topnav" style="display:flex;gap:12px;align-items:center">
+      <a class="btn" href="#about">О нас</a>
+      <a class="btn" href="#learn">Обучение</a>
+      <!-- изменено: ссылка на отдельную папку услуг -->
+      <a class="btn" href="/services/">Услуги</a>
+      <a class="btn primary" href="#join">Вступить</a>
+      <a class="btn" href="#halloween">Halloween</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <!-- HERO SPLIT -->
+  <section class="hero" id="home">
+    <div class="hero-left reveal">
+      <h1 class="headline">Идеи рождают стратегию.<br/>Стратегия создаёт наследие.</h1>
+      <div class="subline">передаём знания — оставляя след</div>
+    </div>
+    <aside class="hero-right reveal">
+      <div class="panel" id="about">
+        <h2>О нас</h2>
+        <p>Оглядываясь на начало своего пути, я понимаю, что он был долгим, насыщенным и не без ошибок.
+          Проходя через собственные взлёты и падения, я осознал: трейдинг — это не путь к быстрой наживе, а системная работа над собой,
+          требующая дисциплины, терпения и критического мышления.</p>
+        <p>Изучая рынок и наблюдая за десятками сообществ, я понял, что большинство из тех, кто продаёт курсы и обещает «золотые горы», — всего лишь ловко упакованные иллюзии.
+          Людей часто учат красивым словам, а не реальному пониманию процессов.</p>
+        <p>Именно поэтому я создал сообщество NZC — пространство для здравомыслящих людей, которые хотят развиваться, а не гнаться за быстрыми результатами.
+          Наша миссия — показать, что единственная инвестиция, которая действительно приносит прибыль, — это инвестиция в самого себя.</p>
+        <p>Я не позиционирую себя как «гуру» или «учителя трейдинга». Я такой же человек, как и многие, кто только идёт этим путём.
+          Но я стараюсь делиться тем, что действительно работает, и тем, что сам проверил на практике.</p>
+        <p>Мы не продаём обучение и не создаём ложных ожиданий. Образовательный контент должен быть доступен каждому — и сегодня достаточно качественных материалов можно найти бесплатно, в том числе на YouTube.
+          Цель NZC — объединить людей, стремящихся к фундаментальному пониманию рынка и личностному росту, в сообщество, где знания и опыт передаются честно и открыто.</p>
+      </div>
+    </aside>
+  </section>
+
+  <!-- ОБУЧЕНИЕ (обновлено) -->
+  <section class="block" id="learn">
+    <h2>Обучение</h2>
+    <div class="panel">
+      <p>
+        Мы не продаём обучение трейдингу и не занимаемся платными курсами, обещающими «лёгкий старт на рынке».
+        Вся образовательная деятельность Zinken Forge основана на принципе открытого доступа: ключевыми идеями,
+        разборами и принципами мышления мы делимся свободно.
+      </p>
+      <p>
+        Всё, что предлагается на платной основе в рамках Zinken Forge, — это не «обучение», а
+        <strong>материалы и инструменты развития</strong>, созданные для тех, кто уже изучает рынок самостоятельно
+        и хочет структурировать процесс. Это журналы, трекеры, карты стратегий, психологические дневники —
+        то, что помогает выстроить дисциплину и систему.
+      </p>
+      <p>
+        Эти продукты не обучают с нуля и не дают торговых сигналов — они
+        <strong>облегчают путь тем, кто осознанно движется вперёд</strong>, помогая превратить знания в устойчивую практику.
+      </p>
+      <p class="muted" style="margin-top:10px">
+        *Любая информация на сайте не является индивидуальной инвестиционной рекомендацией.
+      </p>
+    </div>
+  </section>
+
+  <!-- (СЕКЦИЯ УСЛУГ УДАЛЕНА С ГЛАВНОЙ) -->
+
+  <!-- СВЯЗЬ -->
+  <section class="block" id="contact">
+    <h2>Связь</h2>
+    <div class="panel">
+      <p>Связаться с нами можно через Telegram — оставив комментарий под публикацией или написав в личные сообщения сообщества.</p>
+    </div>
+  </section>
+
+  <!-- HALLOWEEN -->
+  <section class="block" id="halloween">
+    <h2>Halloween</h2>
+    <div class="panel"><p>Две тематические игры к Хеллоуину: выбирай механику и прокачивай мышление.</p></div>
+    <div class="cards">
+      <article class="card">
+        <h3>🎯 Pumpkin Square</h3>
+        <p>Мини-игра о торговле: кликай, покупай и продавай. Динамические котировки и спотовые сделки.</p>
+        <div><a class="cta" href="/pumpkin-square">Играть →</a></div>
+      </article>
+      <article class="card">
+        <h3>🔥 Pumpkin Forge</h3>
+        <p>Стратегическая ферма: развивай поле, управляй ресурсами и принимай решения с расчётом. Каждый шаг приближает к мастерству управления и предпринимательскому мышлению.</p>
+        <div><a class="cta" href="/pumpkin-forge">Играть →</a></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="join" id="join">
+    <a class="cta" href="https://t.me/ZinkenForge" rel="noopener" target="_blank">Вступить в сообщество →</a>
+  </section>
+</main>
+
+<footer>
+  <div class="container" style="display:flex;justify-content:space-between;align-items:center;padding-block:22px;border-top:1px solid var(--line)">
+    <span>© <span id="year"></span> Zinken Forge | NZC — New Zone of Clarity — Все права защищены.</span>
+    <a href="#home" style="opacity:.8">К началу ↑</a>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  /* INTRO sequence */
+  const splash = document.getElementById('splash');
+  const skip = document.getElementById('skip');
+  const line = document.getElementById('line');
+  const span = line ? line.querySelector('span') : null;
+
+  if (line && span){
+    const phrases = [
+      { text: "Добро пожаловать", cls: "small" },
+      { text: "в комьюнити",     cls: "smaller" },
+      { text: "NZC",             cls: "big glow" } // NZC with glow & system font
+    ];
+    const tIn = 800, tHold = 900, tOut = 800, tGap = 500;
+
+    function setClass(base){ line.className = "line " + base; }
+    function showPhrase(i){
+      if(i >= phrases.length){ endIntro(); return; }
+      const p = phrases[i];
+      setClass(p.cls);
+      span.textContent = p.text;
+      line.classList.remove('hide');
+      void line.offsetWidth;
+      line.classList.add('show');
+      setTimeout(()=>{
+        line.classList.remove('show');
+        line.classList.add('hide');
+        setTimeout(()=> showPhrase(i+1), tOut + tGap);
+      }, tIn + tHold);
+    }
+    function endIntro(){
+      splash.classList.add('hide');
+      document.body.classList.remove('lock');
+      setTimeout(()=> splash.remove(), 900);
+      skip.remove();
+    }
+    setTimeout(()=> skip.classList.add('show'), 1000);
+    skip.addEventListener('click', ()=>{
+      splash.classList.add('hide');
+      document.body.classList.remove('lock');
+      setTimeout(()=> splash.remove(), 300);
+      skip.remove();
+    });
+    document.body.classList.add('lock');
+    showPhrase(0);
+  } else {
+    document.body.classList.remove('lock');
+  }
+
+  /* Active nav highlighting */
+  const nav = document.getElementById('topnav');
+  const links = Array.from(nav.querySelectorAll('a[href^="#"]'));
+  const map = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+
+  let manualLockUntil = 0;
+  links.forEach(a => {
+    a.addEventListener('click', () => {
+      links.forEach(l => l.classList.remove('active'));
+      a.classList.add('active');
+      manualLockUntil = performance.now() + 900;
+    });
+  });
+
+  const options = { root: null, rootMargin: '-35% 0px -60% 0px', threshold: 0.01 };
+  const io = new IntersectionObserver((entries)=>{
+    if (performance.now() < manualLockUntil) return;
+    entries.forEach(entry => {
+      const id = entry.target.id;
+      const link = map.get(id);
+      if (!link) return;
+      if (entry.isIntersecting){
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, options);
+
+  Array.from(map.keys()).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) io.observe(el);
+  });
+
+/* Smooth scroll with easing & header offset */
+(function(){
+  const header = document.querySelector('header');
+  // Select ALL in-page anchors across the document (includes footer "К началу ↑")
+  const links = Array.from(document.querySelectorAll('a[href^="#"]'));
+
+  function easeInOutQuad(t){ return t<0.5 ? 2*t*t : -1+(4-2*t)*t; }
+
+  function smoothScrollTo(targetY, duration){
+    const startY = window.pageYOffset;
+    const startTime = performance.now();
+    function step(now){
+      const t = Math.min(1, (now - startTime) / duration);
+      const eased = easeInOutQuad(t);
+      window.scrollTo(0, startY + (targetY - startY) * eased);
+      if (t < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  links.forEach(a => {
+    a.addEventListener('click', (e) => {
+      const href = a.getAttribute('href');
+      const id = href && href.startsWith('#') ? href.slice(1) : null;
+      const el = id ? document.getElementById(id) : null;
+      if (!el) return;
+      e.preventDefault();
+      const headerH = header ? header.offsetHeight : 0;
+      const rect = el.getBoundingClientRect();
+      const targetY = rect.top + window.pageYOffset - Math.max(10, headerH + 8);
+      smoothScrollTo(targetY, 700); // 700ms feels silky
+    });
+  });
+})();
+</script>
+</body>
+</html>

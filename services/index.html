@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Zinken Forge — Услуги</title>
+  <meta name="description" content="Каталог Zinken Forge: открытые продукты, инструменты, материалы, сообщество, премиум-доступ и разработка лендингов." />
+  <link rel="icon" href="/favicon.ico" />
+  <style>
+    :root{
+      --bg:#0b1020; --panel:#121933; --muted:#9aa4c2; --text:#eaf1ff;
+      --accent:#00d0ff; --radius:14px;
+      --shadow:0 10px 40px rgba(0,208,255,.07),0 2px 8px rgba(0,0,0,.4);
+      --gap:18px; --maxw:1100px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font:16px/1.6 system-ui,Roboto,Ubuntu,"Noto Sans",sans-serif;
+      background:radial-gradient(1000px 700px at 20% -10%,rgba(0,208,255,.07),transparent 60%),var(--bg);color:var(--text)}
+    a{color:var(--accent);text-decoration:none} a:hover{color:#bafaff}
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:30px 20px 80px}
+    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}
+    .brand{font-weight:700;background:linear-gradient(90deg,#00d0ff,#bafaff);-webkit-background-clip:text;color:transparent;text-shadow:0 0 20px rgba(0,208,255,.25)}
+    .back{padding:10px 16px;border-radius:12px;background:rgba(0,208,255,.1);border:1px solid rgba(92,245,255,.25);color:#bafaff;font-weight:600}
+    .back:hover{background:rgba(0,208,255,.18)}
+    section{margin:40px 0}
+    .section-title{font-size:22px;font-weight:800;margin:0 0 16px}
+    .grid{display:grid;gap:var(--gap);grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+    .card{background:var(--panel);padding:20px;border-radius:var(--radius);border:1px solid rgba(92,245,255,.15);box-shadow:var(--shadow)}
+    .card h3{margin:0 0 8px;font-size:18px}
+    .muted{color:var(--muted)}
+    .price{margin-top:8px;font-weight:700;color:#bafaff}
+    footer{text-align:center;margin-top:40px;padding-top:15px;color:var(--muted);border-top:1px solid rgba(92,245,255,.15)}
+    .btn{display:inline-block;margin-top:14px;padding:10px 14px;border-radius:10px;background:#bafaff;color:#001a22;font-weight:700}
+    .note{font-size:13px;color:var(--muted);margin-top:6px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">Zinken Forge — Services</div>
+      <a href="https://zinkenforge.ru" class="back" target="_self" onclick="window.location.replace('https://zinkenforge.ru'); return false;">← Вернуться на сайт</a>
+    </header>
+
+    <!-- ОТКРЫТЫЕ ПРОДУКТЫ -->
+    <section>
+      <h2 class="section-title">🧩 Открытые продукты</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Forge Articles</h3>
+          <p class="muted">Авторские публикации, философия мышления, аналитика и наблюдения рынка.</p>
+          <div class="price">Бесплатно</div>
+        </div>
+        <div class="card">
+          <h3>Mini-Games Hub</h3>
+          <p class="muted">Pumpkin Forge и Pumpkin Square — игровые симуляторы дисциплины, управления рисками и работы с вероятностями.</p>
+          <div class="price">Бесплатно</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ИНСТРУМЕНТЫ -->
+    <section>
+      <h2 class="section-title">🛠️ Инструменты (Zinken Tools)</h2>
+      <div class="grid">
+        <div class="card"><h3>Zinken Journal</h3><p class="muted">Журнал сделок с аналитикой и заметками.</p><div class="price">399 ₽</div></div>
+        <div class="card"><h3>Risk Manager</h3><p class="muted">Расчёт объёма сделки, риска и прибыли.</p><div class="price">349 ₽</div></div>
+        <div class="card"><h3>Mind Log</h3><p class="muted">Дневник эмоциональных состояний для контроля импульсивности.</p><div class="price">299 ₽</div></div>
+        <div class="card"><h3>Strategy Map</h3><p class="muted">Построение и проверка рабочих алгоритмов.</p><div class="price">499 ₽</div></div>
+        <div class="card"><h3>Portfolio Tracker</h3><p class="muted">Отслеживание результатов и статистики активов.</p><div class="price">399 ₽</div></div>
+        <div class="card"><h3>Zinken Analyzer</h3><p class="muted">Базовый AI-анализатор сделок и поведения трейдера.</p><div class="price">899 ₽</div></div>
+        <div class="card"><h3>ToolPack (все инструменты)</h3><p class="muted">Полный набор с пожизненными обновлениями.</p><div class="price">1 299 ₽</div></div>
+      </div>
+    </section>
+
+    <!-- МАТЕРИАЛЫ И РАЗВИТИЕ -->
+    <section>
+      <h2 class="section-title">📚 Материалы и развитие</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>System Thinking Base</h3>
+          <p class="muted">Формирование системного мышления и логики действий для уверенного принятия решений.</p>
+          <div class="price">499 ₽</div>
+        </div>
+        <div class="card">
+          <h3>Discipline Flow</h3>
+          <p class="muted">Методика поддержания концентрации, ритма и эмоционального баланса в рабочих циклах.</p>
+          <div class="price">449 ₽</div>
+        </div>
+        <div class="card">
+          <h3>Behavior Patterns</h3>
+          <p class="muted">Понимание психологических факторов, влияющих на риск, прибыль и дисциплину.</p>
+          <div class="price">549 ₽</div>
+        </div>
+        <div class="card">
+          <h3>Forge Mind Program</h3>
+          <p class="muted">Авторская программа Zinken Forge — путь от восприятия к системной стратегии и личной операционной дисциплине.</p>
+          <div class="price">1 499 ₽</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- СООБЩЕСТВО И ПАРТНЁРСТВА -->
+    <section>
+      <h2 class="section-title">🧠 Сообщество и партнёрства</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Forge Community</h3>
+          <p class="muted">Закрытый чат и тематические обсуждения в Telegram. Доступ навсегда.</p>
+          <div class="price">699 ₽</div>
+        </div>
+        <div class="card">
+          <h3>Forge Circle</h3>
+          <p class="muted">Всё из Community + доступ к текущим материалам и инструментам Zinken Forge. Участие во внутренних разборах и рабочих сессиях.</p>
+          <div class="price">1 999 ₽</div>
+          <p class="note">Примечание: Forge Circle фокусируется на действующем стеке материалов и вовлечённости в экосистему.</p>
+        </div>
+        <div class="card">
+          <h3>Brand Collaboration</h3>
+          <p class="muted">Совместная разработка продуктов и брендовых решений.</p>
+          <div class="price">от 5 000 ₽</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PREMIUM -->
+    <section>
+      <h2 class="section-title">💎 Premium Line</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Forge Legacy Access</h3>
+          <p class="muted">
+            Пожизненный доступ ко всей экосистеме Zinken Forge: текущим и будущим материалам, инструментам, закрытым разделам и внутренним инициативам.
+            Это «вечная лицензия» на всё развитие проекта, включая будущие релизы.
+          </p>
+          <ul class="muted" style="margin:8px 0 0 18px">
+            <li>полный доступ к материалам и инструментам (нынешним и будущим);</li>
+            <li>участие в закрытых тест-группах и внутренних запусках;</li>
+            <li>приоритет на новые форматы и коллаборации.</li>
+          </ul>
+          <div class="price">2 999 ₽</div>
+          <p class="note">Единоразовый платёж «навсегда» — без подписок.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- РАЗРАБОТКА ЛЕНДИНГОВ -->
+    <section>
+      <h2 class="section-title">🧩 Разработка лендингов</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Создание лендинг-сайта</h3>
+          <p class="muted">Современные, быстрые, логичные страницы в стиле Zinken Forge. Адаптив, базовая SEO-настройка и аналитика. Возможны корпоративные и персональные проекты.</p>
+          <div class="price">от 1 500 ₽</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- СВЯЗЬ -->
+    <section>
+      <h2 class="section-title">📮 Связь</h2>
+      <div class="grid">
+        <div class="card" style="grid-column:1 / -1">
+          <h3>Как связаться</h3>
+          <p class="muted">
+            Для связи используйте личные сообщения в Telegram-сообществе Zinken Forge.
+            Откройте канал и напишите нам в личные сообщения сообщества.
+          </p>
+          <a class="btn" href="https://t.me/ZinkenForge" target="_blank">Открыть Telegram-канал</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      © 2025 Zinken Forge | NZC — New Zone Of Clarity — Все права защищены.
+    </footer>
+  </div>
+</body>
+</html>
