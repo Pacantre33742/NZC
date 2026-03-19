@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Zinken Forge | New Zone of Clarity</title>
+<link href="https://zinkenforge.ru/" rel="canonical"/>
+<meta content="Официальный сайт Zinken Forge — минималистичное крипто-комьюнити о дисциплине, мышлении и долгосрочном подходе к рынку." name="description"/>
+<meta content="Zinken Forge, NZC, New Zone of Clarity, трейдинг, дисциплина, мышление, сообщество, крипто" name="keywords"/>
+<meta content="Zinken Forge | NZC" name="author"/>
+<meta content="ru_RU" property="og:locale"/>
+<meta content="website" property="og:type"/>
+<meta content="Zinken Forge | NZC" property="og:site_name"/>
+<meta content="Zinken Forge | New Zone of Clarity" property="og:title"/>
+<meta content="Сообщество для тех, кто выбирает дисциплину, мышление и долгосрочный подход к рынку." property="og:description"/>
+<meta content="https://zinkenforge.ru/" property="og:url"/>
+<meta content="https://zinkenforge.ru/og-image-zinkenforge.png" property="og:image"/>
+<meta content="https://zinkenforge.ru/og-image-zinkenforge.png" property="twitter:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="summary" name="twitter:card"/>
+<meta content="Zinken Forge | New Zone of Clarity" name="twitter:title"/>
+<meta content="Сообщество для тех, кто выбирает дисциплину, мышление и долгосрочный подход к рынку." name="twitter:description"/>
+<meta content="no-referrer-when-downgrade" name="referrer"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Zinken Forge",
+  "alternateName": "NZC — New Zone of Clarity",
+  "url": "https://zinkenforge.ru/",
+  "sameAs": [
+    "https://t.me/ZinkenForge"
+  ]
+}
+</script>
+<meta content="dark" name="color-scheme"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet"/>
+<link href="https://zinkenforge.ru/favicon.ico?v=6" rel="icon" sizes="any"/>
+<link href="https://zinkenforge.ru/favicon-32.png?v=6" rel="icon" sizes="32x32" type="image/png"/>
+<link href="https://zinkenforge.ru/favicon-192.png?v=6" rel="icon" sizes="192x192" type="image/png"/>
+<link href="https://zinkenforge.ru/apple-touch-icon.png?v=6" rel="apple-touch-icon"/>
+<link href="https://zinkenforge.ru/site.webmanifest" rel="manifest"/>
+<meta content="#000000" name="theme-color"/>
+<style>
+  :root{
+    --bg:#000;
+    --panel:rgba(255,255,255,.02);
+    --panel-strong:rgba(255,255,255,.03);
+    --line:rgba(255,255,255,.08);
+    --line-soft:rgba(255,255,255,.05);
+    --text:#f5f5f5;
+    --muted:#9d9d9d;
+    --soft:#d7d7d7;
+    --accent:#ffffff;
+    --accent2:#d5d5d5;
+    --shadow:0 18px 42px rgba(0,0,0,.82);
+    --glow:rgba(255,255,255,.14);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    padding:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,Arial,sans-serif;
+    overflow-x:hidden;
+  }
+  body.lock{overflow:hidden}
+  a{color:inherit;text-decoration:none}
+  .container{max-width:1180px;margin:0 auto;padding:0 24px}
+  header,main,footer{position:relative;z-index:1}
+
+  #space-canvas{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:0;
+    display:block;
+    pointer-events:none;
+    min-width:100vw;
+    min-height:100vh;
+  }
+  #intro-space-canvas{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:-1;
+    pointer-events:none;
+  }
+
+  .splash{
+    position:fixed;
+    inset:0;
+    background:#000;
+    display:grid;
+    place-items:center;
+    z-index:10000;
+    transition:opacity .8s ease;
+  }
+  .splash.hide{opacity:0;pointer-events:none}
+  .stage{position:relative;display:grid;place-items:center;width:100%;height:70vh;padding:24px}
+  .line{opacity:0;text-align:center;filter:blur(.2px)}
+  .line span{display:inline-block;letter-spacing:.01em;font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,Arial,sans-serif;font-weight:800}
+  .line.small span,.line.smaller span{font-family:"Playfair Display",serif;font-weight:400}
+  .line.small span{font-size:min(8.8vw,52px)}
+  .line.smaller span{font-size:min(8.2vw,44px)}
+  .line.big span{font-size:min(18vw,120px);line-height:.92}
+  .glow span{
+    color:#f6f8ff;
+    text-shadow:0 0 10px rgba(255,255,255,.7),0 0 28px rgba(200,200,200,.42),0 0 54px rgba(150,150,150,.26);
+  }
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes fadeOut{from{opacity:1}to{opacity:0}}
+  .show{animation:fadeIn .65s ease forwards}
+  .hide{animation:fadeOut .65s ease forwards}
+  .skip{
+    position:fixed;
+    right:16px;
+    bottom:16px;
+    z-index:10001;
+    padding:10px 16px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,.24);
+    background:rgba(0,0,0,.45);
+    color:#fff;
+    cursor:pointer;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .3s ease,transform .3s ease,background .3s ease,border-color .3s ease,box-shadow .3s ease;
+    transform:translateY(6px);
+  }
+  .skip.show{opacity:1;pointer-events:auto;transform:translateY(0)}
+  .skip:hover{background:#0f0f0f;border-color:rgba(255,255,255,.45);box-shadow:0 0 10px rgba(255,255,255,.16)}
+
+  header{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:rgba(0,0,0,.42);
+    border-bottom:1px solid var(--line-soft);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+  }
+  .nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    min-height:72px;
+  }
+  .brand{
+    font-weight:800;
+    letter-spacing:.04em;
+    font-size:14px;
+    white-space:nowrap;
+  }
+  .brand span{display:block;color:var(--muted);font-weight:500;letter-spacing:.02em;font-size:11px;margin-top:2px}
+  #topnav{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+  .nav a.btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 14px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,.09);
+    background:rgba(255,255,255,.02);
+    color:var(--text);
+    transition:border-color .25s ease,box-shadow .25s ease,background .25s ease;
+  }
+  .nav a.btn:hover,.nav a.btn.active{
+    border-color:rgba(255,255,255,.26);
+    box-shadow:0 0 18px var(--glow);
+    background:rgba(255,255,255,.03);
+  }
+  .nav a.primary{
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#050505;
+    border-color:transparent;
+    box-shadow:0 10px 28px rgba(255,255,255,.22);
+    font-weight:700;
+  }
+  .nav a.primary:hover,.nav a.primary.active{
+    border-color:transparent;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    box-shadow:0 10px 28px rgba(255,255,255,.22);
+  }
+
+  main{padding:18px 0 0}
+  .hero{
+    min-height:calc(100vh - 90px);
+    display:grid;
+    align-items:center;
+    padding:56px 0 36px;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr);
+    gap:28px;
+    align-items:center;
+  }
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:8px 12px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.015);
+    color:var(--soft);
+    font-size:12px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    margin-bottom:18px;
+  }
+  .headline{
+    margin:0;
+    font-size:clamp(34px,5.5vw,72px);
+    line-height:1.02;
+    font-weight:800;
+    max-width:760px;
+    text-wrap:balance;
+    text-shadow:0 0 22px rgba(255,255,255,.08);
+  }
+  .hero-copy{
+    margin:18px 0 0;
+    max-width:690px;
+    font-size:clamp(16px,1.9vw,20px);
+    line-height:1.72;
+    color:#d7d7d7;
+  }
+  .hero-motto{
+    margin:22px 0 0;
+    font-size:clamp(18px,2.1vw,24px);
+    line-height:1.45;
+    color:#ececec;
+  }
+  .hero-motto span{display:block;color:var(--muted);font-size:14px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+  .hero-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    margin-top:30px;
+  }
+  .cta,.btn-secondary{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    min-height:52px;
+    padding:0 18px;
+    border-radius:14px;
+    font-weight:700;
+    transition:border-color .25s ease,box-shadow .25s ease,background .25s ease,transform .2s ease;
+  }
+  .cta{
+    border:1px solid transparent;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#050505;
+    box-shadow:0 12px 30px rgba(255,255,255,.2);
+  }
+  .cta:hover{transform:translateY(-1px)}
+  .btn-secondary{
+  background: linear-gradient(135deg,#ffffff,#d5d5d5);
+  color: #050505;
+  border-color: transparent;
+  box-shadow: 0 10px 28px rgba(255,255,255,.25);
+}
+.btn-secondary:hover{
+  transform: translateY(-2px);
+}
+
+
+  .hero-panel,
+  .panel,
+  .card{
+    position:relative;
+    border:1px solid var(--line);
+    border-radius:18px;
+    background:var(--panel);
+    box-shadow:var(--shadow);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    overflow:hidden;
+  }
+  .hero-panel{padding:24px}
+  .hero-panel::after,
+  .panel::after,
+  .card::after{
+    content:"";
+    position:absolute;
+    inset:-1px;
+    border-radius:inherit;
+    border:1px solid rgba(255,255,255,.08);
+    pointer-events:none;
+    opacity:.12;
+    mask-image:linear-gradient(to bottom,rgba(255,255,255,.4),transparent 65%);
+  }
+  .stat-grid{display:grid;grid-template-columns:1fr;gap:12px}
+  .stat{
+    padding:16px;
+    border-radius:14px;
+    background:rgba(255,255,255,.015);
+    border:1px solid rgba(255,255,255,.05);
+  }
+  .stat-title{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .stat-text{font-size:15px;line-height:1.65;color:#e1e1e1}
+
+  section.block{padding:28px 0 56px}
+  .section-head{
+    max-width:760px;
+    margin-bottom:24px;
+  }
+  .section-kicker{
+    color:var(--muted);
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  .section-head h2{
+    margin:0 0 10px;
+    font-size:clamp(26px,3.7vw,40px);
+    line-height:1.1;
+  }
+  .section-head p{
+    margin:0;
+    color:#cfcfcf;
+    line-height:1.75;
+    font-size:16px;
+  }
+  .panel{padding:22px}
+  .panel p{margin:0;color:#d5d5d5;line-height:1.78}
+  .cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+  .card{padding:20px}
+  .card h3{margin:0 0 12px;font-size:20px}
+  .list{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+  .list li{
+    position:relative;
+    padding-left:20px;
+    color:#d8d8d8;
+    line-height:1.65;
+  }
+  .list li::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:.75em;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#fff;
+    box-shadow:0 0 10px rgba(255,255,255,.3);
+    transform:translateY(-50%);
+  }
+  .principles{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:18px;
+  }
+  .principle{
+    padding:18px 18px 16px;
+    border-radius:16px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.02);
+    box-shadow:var(--shadow);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+  }
+  .principle strong{display:block;font-size:18px;margin-bottom:8px}
+  .principle p{margin:0;color:#d0d0d0;line-height:1.7}
+  .join-panel{
+    padding:28px;
+    display:grid;
+    gap:20px;
+    grid-template-columns:minmax(0,1fr) auto;
+    align-items:center;
+  }
+  .join-copy h2{margin:0 0 10px;font-size:clamp(26px,3.7vw,40px)}
+  .join-copy p{margin:0;color:#d5d5d5;line-height:1.75;max-width:680px}
+  .join-actions{display:flex;flex-wrap:wrap;gap:14px;justify-content:flex-end}
+  .contact-note{
+    margin-top:16px;
+    padding-top:16px;
+    border-top:1px solid var(--line-soft);
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.7;
+  }
+  .reveal{opacity:0;transform:translateY(10px);animation:up .6s ease .2s forwards}
+  @keyframes up{to{opacity:1;transform:translateY(0)}}
+
+  footer .foot{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    padding:22px 0;
+    border-top:1px solid var(--line-soft);
+    color:var(--muted);
+    font-size:14px;
+  }
+
+  @media (max-width:960px){
+    .hero-grid{grid-template-columns:1fr;gap:22px}
+    .cards,.principles{grid-template-columns:1fr}
+    .join-panel{grid-template-columns:1fr}
+    .join-actions{justify-content:flex-start}
+  }
+  @media (max-width:760px){
+    .nav{align-items:flex-start;padding:16px 0}
+    .brand{white-space:normal;max-width:210px}
+    #topnav{gap:10px}
+    .hero{min-height:auto;padding-top:44px}
+    .hero-copy{font-size:16px}
+    .hero-actions{flex-direction:column;align-items:stretch}
+    .cta,.btn-secondary{width:100%}
+    .panel,.hero-panel,.card,.join-panel{padding:20px}
+    footer .foot{flex-direction:column;align-items:flex-start}
+  }
+  .hero-nzc{
+  min-height: calc(100vh - 90px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 24px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-nzc-inner{
+  max-width: 860px;
+}
+
+.hero-nzc-title{
+  font-size: 14px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #cfcfcf;
+  margin-bottom: 26px;
+  opacity: .9;
+}
+
+.hero-nzc-headline{
+  font-size: clamp(34px, 5.2vw, 68px);
+  line-height: 1.05;
+  font-weight: 800;
+  margin: 0 0 22px;
+  text-shadow:
+    0 0 12px rgba(255,255,255,.18),
+    0 0 36px rgba(255,255,255,.08);
+}
+
+.hero-nzc-sub{
+  font-size: clamp(16px, 2vw, 20px);
+  color: #d7d7d7;
+  margin-bottom: 40px;
+  line-height: 1.7;
+}
+
+.hero-nzc-actions{
+  display: flex;
+  gap: 52px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+
+.hero-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  padding: 0 36px;
+  border-radius: 16px;
+  font-weight: 700;
+  border: 1px solid rgba(255,255,255,.15);
+  transition: .25s ease;
+}
+
+.hero-btn.primary{
+  background: linear-gradient(135deg,#ffffff,#d5d5d5);
+  color: #050505;
+  border-color: transparent;
+  box-shadow: 0 10px 28px rgba(255,255,255,.25);
+}
+
+.hero-btn.primary:hover{
+  transform: translateY(-2px);
+}
+
+.hero-btn.secondary{
+  background: rgba(255,255,255,.02);
+  color: #fff;
+}
+
+.hero-btn.secondary:hover{
+  border-color: rgba(255,255,255,.35);
+  box-shadow: 0 0 18px rgba(255,255,255,.15);
+}
+
+.hero-nzc-motto{
+  font-size: 16px;
+  color: #bdbdbd;
+  letter-spacing: .04em;
+  opacity: .85;
+}
+</style>
+</head>
+<body class="lock">
+<div aria-label="Последовательное приветствие" class="splash" id="splash">
+  <canvas id="intro-space-canvas"></canvas>
+  <div class="stage">
+    <div class="line small" id="line"><span></span></div>
+  </div>
+</div>
+<button aria-label="Пропустить интро" class="skip" id="skip">Пропустить</button>
+<canvas id="space-canvas"></canvas>
+
+<header>
+  <div class="container nav">
+    <div class="brand">Zinken Forge<span>New Zone of Clarity</span></div>
+    <nav id="topnav">
+      <a class="btn" href="#about">О проекте</a>
+      <a class="btn" href="#audience">Для кого</a>
+      <a class="btn" href="#principles">Принципы</a>
+      <a class="btn" href="#format">Формат</a>
+      <a class="btn primary" href="#join">Вступить</a>
+    </nav>
+  </div>
+</header>
+<section class="hero-nzc">
+  <div class="hero-nzc-inner">
+
+    <div class="hero-nzc-title">
+      NZC — New Zone of Clarity
+    </div>
+
+    <h1 class="hero-nzc-headline">
+      Сообщество для тех, кто строит мышление,<br>
+      а не гонится за быстрыми сигналами
+    </h1>
+
+    <div class="hero-nzc-sub">
+      Закрытая среда дисциплины, стратегий и долгосрочной работы
+    </div>
+
+    <div class="hero-nzc-actions">
+      <a href="https://t.me/ZinkenForge" target="_blank" class="hero-btn primary">
+        Вступить
+      </a>
+      <a href="#about" class="hero-btn secondary">
+        Изучить подход
+      </a>
+    </div>
+
+    <div class="hero-nzc-motto">
+      Результат — следствие системы, а не удачи.
+    </div>
+
+  </div>
+</section>
+<main>
+  <section class="hero container" id="home">
+    <div class="hero-grid">
+      <div class="reveal">
+        <div class="eyebrow">NZC — сообщество долгого взгляда</div>
+        <h1 class="headline">Сообщество для тех, кто выбирает дисциплину, мышление и долгосрочный подход к рынку.</h1>
+        <p class="hero-copy">NZC — это спокойная точка входа для людей, которым не нужен шум, готовые сигналы и дешёвая мотивация. Здесь важны ясность, выдержка и способность строить собственную систему, а не жить чужими обещаниями.</p>
+        <div class="hero-motto"><span>Кредо</span>Ясность рождает систему.<br/>Система формирует результат.</div>
+        <div class="hero-actions">
+        </div>
+      </div>
+      <aside class="hero-panel reveal" aria-label="Ключевые ориентиры проекта">
+        <div class="stat-grid">
+          <div class="stat">
+            <div class="stat-title">Фокус</div>
+            <div class="stat-text">Дисциплина, наблюдение, стратегия и трезвый взгляд на рынок без суеты.</div>
+          </div>
+          <div class="stat">
+            <div class="stat-title">Подход</div>
+            <div class="stat-text">Без инфоцыганства, без сигналов, без обещаний лёгких денег и искусственного пафоса.</div>
+          </div>
+          <div class="stat">
+            <div class="stat-title">Среда</div>
+            <div class="stat-text">Для тех, кому ближе внутренний порядок, чем постоянный шум вокруг рынка.</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="block container" id="about">
+    <div class="section-head reveal">
+      <div class="section-kicker">О проекте</div>
+      <h2>Не курс, не витрина и не очередной крипто‑лендинг.</h2>
+      <p>NZC — это личный проект и сообщество, собранное вокруг спокойного, системного взгляда на рынок. Без роли «гуру», без лишней упаковки и без попытки изображать масштаб там, где важнее честная основа.</p>
+    </div>
+    <div class="panel reveal">
+      <p>Проект вырос из простого понимания: рынок не про быструю наживу, а про дисциплину, терпение и способность думать самостоятельно. Именно поэтому NZC строится как среда для здравомыслящих людей, которым важнее глубина, чем хайп, и устойчивость, чем краткосрочный азарт.</p>
+    </div>
+  </section>
+
+  <section class="block container" id="audience">
+    <div class="section-head reveal">
+      <div class="section-kicker">Фильтр входа</div>
+      <h2>Это пространство подойдёт не всем — и в этом его сила.</h2>
+      <p>Чем точнее отбор на входе, тем чище среда внутри. Поэтому лендинг не обещает всем всё сразу, а сразу показывает, кому здесь действительно есть место.</p>
+    </div>
+    <div class="cards reveal">
+      <article class="card">
+        <h3>Для кого</h3>
+        <ul class="list">
+          <li>Для тех, кто устал от крикливой крипто‑индустрии и ищет спокойный взгляд на рынок.</li>
+          <li>Для тех, кто ценит мышление выше эмоций и предпочитает строить свою систему.</li>
+          <li>Для тех, кому ближе долгосрочный прогресс, чем погоня за быстрыми решениями.</li>
+          <li>Для людей, которые хотят находиться в адекватной и дисциплинированной среде.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Не для кого</h3>
+        <ul class="list">
+          <li>Не для тех, кто ищет сигналы, лёгкие деньги и готовые ответы.</li>
+          <li>Не для случайных наблюдателей, которым нужен только внешний шум вокруг рынка.</li>
+          <li>Не для тех, кто воспринимает трейдинг как шоу, а не как процесс и ответственность.</li>
+          <li>Не для людей, которым ближе хаос, чем дисциплина и внутренний порядок.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="block container" id="principles">
+    <div class="section-head reveal">
+      <div class="section-kicker">Принципы</div>
+      <h2>Основа NZC — не громкие обещания, а несколько простых опор.</h2>
+      <p>Когда у проекта нет внятного внутреннего кода, он быстро превращается в ещё один шумный канал. Здесь всё держится на обратном принципе: меньше шума, больше смысла.</p>
+    </div>
+    <div class="principles reveal">
+      <article class="principle">
+        <strong>Дисциплина важнее эмоций</strong>
+        <p>Рынок не про мгновенные всплески настроения, а про устойчивость решений и способность держать форму на дистанции.</p>
+      </article>
+      <article class="principle">
+        <strong>Мышление важнее сигналов</strong>
+        <p>Чужие подсказки не создают основу. Основа появляется тогда, когда человек умеет разбирать происходящее сам.</p>
+      </article>
+      <article class="principle">
+        <strong>Система важнее суеты</strong>
+        <p>Случайные действия дают случайный результат. Важен не всплеск, а выстроенный подход, который можно повторять.</p>
+      </article>
+      <article class="principle">
+        <strong>Долгосрок важнее ажиотажа</strong>
+        <p>Настоящий прогресс не выглядит громко. Он накапливается тихо, когда внимание направлено не на шум, а на структуру.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="block container" id="format">
+    <div class="section-head reveal">
+      <div class="section-kicker">Формат</div>
+      <h2>Сейчас это чистый вход в проект — без лишних обещаний и недостроенных сущностей.</h2>
+      <p>На этом этапе NZC не пытается изображать большую экосистему. Здесь нет искусственно раздутых разделов, несуществующих продуктов и громких обещаний «скоро будет». Только то, что реально соответствует текущему состоянию проекта.</p>
+    </div>
+    <div class="panel reveal">
+      <p>Сайт выполняет одну задачу: показать подход, атмосферу и критерии входа. Если тебе близка эта логика — дальше путь продолжается уже внутри сообщества. Если нет, это тоже нормально: проект не стремится понравиться всем подряд.</p>
+      <div class="contact-note">Любая информация на сайте носит ознакомительный характер и не является индивидуальной инвестиционной рекомендацией.</div>
+    </div>
+  </section>
+
+  <section class="block container" id="join">
+    <div class="join-panel panel reveal">
+      <div class="join-copy">
+        <h2>Если тебе близок такой подход — присоединяйся.</h2>
+        <p>NZC остаётся спокойным пространством для тех, кто выбирает ясность, дисциплину и долгосрочное мышление. Без клоунады, без избыточного маркетинга и без шума ради шума.</p>
+      </div>
+      <div class="join-actions">
+        <a class="cta" href="https://t.me/ZinkenForge" rel="noopener noreferrer" target="_blank">Вступить в сообщество</a>
+        <a class="btn-secondary" href="https://t.me/ZinkenCEO" rel="noopener noreferrer" target="_blank">Связаться</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container foot">
+    <span>© <span id="year"></span> Zinken Forge | NZC — New Zone of Clarity</span>
+    <a href="#home">К началу ↑</a>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const splash = document.getElementById('splash');
+  const skip = document.getElementById('skip');
+  const line = document.getElementById('line');
+  const span = line ? line.querySelector('span') : null;
+
+  function finishIntro(removeDelay){
+    splash.classList.add('hide');
+    document.body.classList.remove('lock');
+    setTimeout(()=> splash.remove(), removeDelay);
+    skip.remove();
+  }
+
+  if (line && span){
+    const phrases = [
+      { text: 'Добро пожаловать', cls: 'small' },
+      { text: 'в комьюнити', cls: 'smaller' },
+      { text: 'NZC', cls: 'big glow' }
+    ];
+    const tIn = 650, tHold = 650, tOut = 650, tGap = 220;
+
+    function setClass(base){ line.className = 'line ' + base; }
+    function showPhrase(i){
+      if (i >= phrases.length){
+        finishIntro(700);
+        return;
+      }
+      const p = phrases[i];
+      setClass(p.cls);
+      span.textContent = p.text;
+      line.classList.remove('hide');
+      void line.offsetWidth;
+      line.classList.add('show');
+      setTimeout(()=>{
+        line.classList.remove('show');
+        line.classList.add('hide');
+        setTimeout(()=> showPhrase(i + 1), tOut + tGap);
+      }, tIn + tHold);
+    }
+
+    setTimeout(()=> skip.classList.add('show'), 700);
+    skip.addEventListener('click', ()=> finishIntro(250));
+    showPhrase(0);
+  } else {
+    document.body.classList.remove('lock');
+  }
+
+  const nav = document.getElementById('topnav');
+  const links = Array.from(nav.querySelectorAll('a[href^="#"]'));
+  const map = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+  let manualLockUntil = 0;
+
+  links.forEach(a => {
+    a.addEventListener('click', () => {
+      links.forEach(l => l.classList.remove('active'));
+      a.classList.add('active');
+      manualLockUntil = performance.now() + 900;
+    });
+  });
+
+  const options = { root: null, rootMargin: '-35% 0px -52% 0px', threshold: 0.01 };
+  const io = new IntersectionObserver((entries)=>{
+    if (performance.now() < manualLockUntil) return;
+    entries.forEach(entry => {
+      const id = entry.target.id;
+      const link = map.get(id);
+      if (!link) return;
+      if (entry.isIntersecting){
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, options);
+
+  Array.from(map.keys()).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) io.observe(el);
+  });
+
+  (function(){
+    const header = document.querySelector('header');
+    const linksAll = Array.from(document.querySelectorAll('a[href^="#"]'));
+
+    function easeInOutQuad(t){ return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; }
+    function smoothScrollTo(targetY, duration){
+      const startY = window.pageYOffset;
+      const startTime = performance.now();
+      function step(now){
+        const t = Math.min(1, (now - startTime) / duration);
+        const eased = easeInOutQuad(t);
+        window.scrollTo(0, startY + (targetY - startY) * eased);
+        if (t < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    linksAll.forEach(a => {
+      a.addEventListener('click', (e) => {
+        const href = a.getAttribute('href');
+        const id = href && href.startsWith('#') ? href.slice(1) : null;
+        const el = id ? document.getElementById(id) : null;
+        if (!el) return;
+        e.preventDefault();
+        const headerH = header ? header.offsetHeight : 0;
+        const targetY = el.getBoundingClientRect().top + window.pageYOffset - Math.max(12, headerH + 10);
+        smoothScrollTo(targetY, 700);
+      });
+    });
+  })();
+</script>
+
+<script>
+(function () {
+  const canvas = document.getElementById('space-canvas');
+  const ctx = canvas.getContext('2d');
+
+  let width = 0;
+  let height = 0;
+  let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  const STAR_COUNT = 220;
+  const stars = [];
+  const comets = [];
+  const COMET_INTERVAL = 30000;
+  let cometTimer = 0;
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    createStars();
+  }
+  window.addEventListener('resize', resize);
+
+  function createStars() {
+    stars.length = 0;
+    for (let i = 0; i < STAR_COUNT; i++) {
+      stars.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        radius: Math.random() * 1.3 + 0.4,
+        baseAlpha: Math.random() * 0.4 + 0.3,
+        twinkleSpeed: Math.random() * 0.0015 + 0.0005,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+  }
+
+  function spawnComet() {
+    const side = Math.floor(Math.random() * 4);
+    let x, y, vx, vy;
+    const speed = (Math.min(width, height) / 1000) * (200 + Math.random() * 120);
+    const angleSpread = 0.4;
+
+    if (side === 0) {
+      x = -50;
+      y = Math.random() * height;
+      const angle = (Math.PI / 4) + (Math.random() - 0.5) * angleSpread;
+      vx = Math.cos(angle) * speed;
+      vy = Math.sin(angle) * speed;
+    } else if (side === 1) {
+      x = width + 50;
+      y = Math.random() * height;
+      const angle = (Math.PI * 3 / 4) + (Math.random() - 0.5) * angleSpread;
+      vx = Math.cos(angle) * speed;
+      vy = Math.sin(angle) * speed;
+    } else if (side === 2) {
+      x = Math.random() * width;
+      y = -50;
+      const angle = (Math.PI / 2) + (Math.random() - 0.5) * angleSpread;
+      vx = Math.cos(angle) * speed;
+      vy = Math.sin(angle) * speed;
+    } else {
+      x = Math.random() * width;
+      y = height + 50;
+      const angle = (Math.PI * 3 / 2) + (Math.random() - 0.5) * angleSpread;
+      vx = Math.cos(angle) * speed;
+      vy = Math.sin(angle) * speed;
+    }
+
+    comets.push({ x, y, vx, vy, life: 0, maxLife: 4500 + Math.random() * 1500, trail: [] });
+  }
+
+  resize();
+  let lastTime = performance.now();
+
+  function loop(now) {
+    const dt = now - lastTime;
+    lastTime = now;
+
+    ctx.clearRect(0, 0, width, height);
+    ctx.fillStyle = '#000000';
+    ctx.fillRect(0, 0, width, height);
+
+    for (const star of stars) {
+      const t = now * star.twinkleSpeed + star.phase;
+      const alpha = star.baseAlpha * (0.6 + 0.4 * (0.5 + 0.5 * Math.sin(t)));
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+      ctx.fill();
+    }
+
+    for (let i = comets.length - 1; i >= 0; i--) {
+      const c = comets[i];
+      c.life += dt;
+      const dtSec = dt / 1000;
+      c.x += c.vx * dtSec;
+      c.y += c.vy * dtSec;
+      c.trail.push({ x: c.x, y: c.y });
+      if (c.trail.length > 40) c.trail.shift();
+      const lifeRatio = 1 - (c.life / c.maxLife);
+      if (lifeRatio <= 0) {
+        comets.splice(i, 1);
+        continue;
+      }
+
+      ctx.save();
+      ctx.lineWidth = 2;
+      ctx.lineCap = 'round';
+      for (let j = 1; j < c.trail.length; j++) {
+        const p1 = c.trail[j - 1];
+        const p2 = c.trail[j];
+        const t = j / c.trail.length;
+        ctx.strokeStyle = `rgba(255,255,255,${lifeRatio * (t * 0.9)})`;
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+      }
+      ctx.beginPath();
+      ctx.arc(c.x, c.y, 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${lifeRatio})`;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    cometTimer += dt;
+    if (cometTimer > COMET_INTERVAL) {
+      cometTimer = 0;
+      spawnComet();
+    }
+
+    requestAnimationFrame(loop);
+  }
+
+  requestAnimationFrame(loop);
+})();
+</script>
+<script>
+(function () {
+  const canvas = document.getElementById('intro-space-canvas');
+  const ctx = canvas.getContext('2d');
+
+  let width = 0;
+  let height = 0;
+  let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  const STAR_COUNT = 220;
+  const stars = [];
+  const comets = [];
+  const COMET_INTERVAL = 30000;
+  let cometTimer = 0;
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    createStars();
+  }
+  window.addEventListener('resize', resize);
+
+  function createStars() {
+    stars.length = 0;
+    for (let i = 0; i < STAR_COUNT; i++) {
+      stars.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        radius: Math.random() * 1.3 + 0.4,
+        baseAlpha: Math.random() * 0.4 + 0.3,
+        twinkleSpeed: Math.random() * 0.0015 + 0.0005,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+  }
+
+  function spawnComet() {
+    const side = Math.floor(Math.random() * 4);
+    let x, y, vx, vy;
+    const speed = (Math.min(width, height) / 1000) * (200 + Math.random() * 120);
+    const angleSpread = 0.4;
+
+    if (side === 0) {
+      x = -50;
+      y = Math.random() * height;
+      const angle = (Math.PI / 4) + (Math.random() - 0.5) * angleSpread;
+      vx = Math.cos(angle) * speed;
+      vy = Math.sin(angle) * speed;
+    } else if (side === 1) {
+      x = width + 50;
+      y = Math.random() * height;
+      const angle = (Math.PI * 3 / 4) + (Math.random() - 0.5) * angleSpread;
+      vx = Math.cos(angle) * speed;
+      vy = Math.sin(angle) * speed;
+    } else if (side === 2) {
+      x = Math.random() * width;
+      y = -50;
+      const angle = (Math.PI / 2) + (Math.random() - 0.5) * angleSpread;
+      vx = Math.cos(angle) * speed;
+      vy = Math.sin(angle) * speed;
+    } else {
+      x = Math.random() * width;
+      y = height + 50;
+      const angle = (Math.PI * 3 / 2) + (Math.random() - 0.5) * angleSpread;
+      vx = Math.cos(angle) * speed;
+      vy = Math.sin(angle) * speed;
+    }
+
+    comets.push({ x, y, vx, vy, life: 0, maxLife: 4500 + Math.random() * 1500, trail: [] });
+  }
+
+  resize();
+  let lastTime = performance.now();
+
+  function loop(now) {
+    const dt = now - lastTime;
+    lastTime = now;
+
+    ctx.clearRect(0, 0, width, height);
+    ctx.fillStyle = '#000000';
+    ctx.fillRect(0, 0, width, height);
+
+    for (const star of stars) {
+      const t = now * star.twinkleSpeed + star.phase;
+      const alpha = star.baseAlpha * (0.6 + 0.4 * (0.5 + 0.5 * Math.sin(t)));
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+      ctx.fill();
+    }
+
+    for (let i = comets.length - 1; i >= 0; i--) {
+      const c = comets[i];
+      c.life += dt;
+      const dtSec = dt / 1000;
+      c.x += c.vx * dtSec;
+      c.y += c.vy * dtSec;
+      c.trail.push({ x: c.x, y: c.y });
+      if (c.trail.length > 40) c.trail.shift();
+      const lifeRatio = 1 - (c.life / c.maxLife);
+      if (lifeRatio <= 0) {
+        comets.splice(i, 1);
+        continue;
+      }
+
+      ctx.save();
+      ctx.lineWidth = 2;
+      ctx.lineCap = 'round';
+      for (let j = 1; j < c.trail.length; j++) {
+        const p1 = c.trail[j - 1];
+        const p2 = c.trail[j];
+        const t = j / c.trail.length;
+        ctx.strokeStyle = `rgba(255,255,255,${lifeRatio * (t * 0.9)})`;
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+      }
+      ctx.beginPath();
+      ctx.arc(c.x, c.y, 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${lifeRatio})`;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    cometTimer += dt;
+    if (cometTimer > COMET_INTERVAL) {
+      cometTimer = 0;
+      spawnComet();
+    }
+
+    requestAnimationFrame(loop);
+  }
+
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
